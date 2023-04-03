@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 // requisitos da página de login feitos por todo o grupo em conjunto
 
@@ -8,11 +9,13 @@ function Login() {
     password: '',
   });
   const [isDisabled, setIsDisabled] = useState(true);
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     localStorage.setItem('user', JSON.stringify({ email: user.email }));
+    history.push('/meals');
   };
 
   const handleValidation = () => {
