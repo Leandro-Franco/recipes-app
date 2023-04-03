@@ -1,6 +1,31 @@
+import { useState } from 'react';
+
 function Login() {
+  // const [user, setUser] = useState({
+  //   email: '',
+  //   senha: '',
+  // });
+
   return (
-    <h1>Login</h1>
+    <form>
+      <label htmlFor="email-input">
+        Email:
+        <input
+          type="email"
+          id="email-input"
+          data-testid="email-input"
+        />
+      </label>
+      <label htmlFor="password-input">
+        Senha:
+        <input
+          type="password"
+          id="password-input"
+          data-testid="password-input"
+        />
+      </label>
+      <button type="submit" data-testid="login-submit-btn">Entrar</button>
+    </form>
   );
 }
 
