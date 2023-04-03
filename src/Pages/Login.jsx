@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+// requisitos da página de login feitos por todo o grupo em conjunto
+
 function Login() {
   const [user, setUser] = useState({
     email: '',
@@ -9,6 +11,8 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    localStorage.setItem('user', JSON.stringify({ email: user.email }));
   };
 
   const handleValidation = () => {
