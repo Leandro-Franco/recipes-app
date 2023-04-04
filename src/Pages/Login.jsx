@@ -28,42 +28,48 @@ function Login() {
   };
 
   return (
-    <form onSubmit={ (e) => handleSubmit(e) }>
-      <label htmlFor="email-input">
-        Email:
-        <input
-          type="email"
-          value={ user.email }
-          id="email-input"
-          onChange={ ({ target: { value } }) => {
-            setUser({ ...user, email: value });
-            handleValidation();
-          } }
-          data-testid="email-input"
-        />
-      </label>
-      <label htmlFor="password-input">
-        Senha:
-        <input
-          type="password"
-          value={ user.password }
-          id="password-input"
-          onChange={ ({ target: { value } }) => {
-            setUser({ ...user, password: value });
-            handleValidation();
-          } }
-          data-testid="password-input"
-        />
-      </label>
-      <button
-        type="submit"
-        data-testid="login-submit-btn"
-        disabled={ isDisabled }
-      >
-        Entrar
-
-      </button>
-    </form>
+    <section className="login-page">
+      <h2>RECIPIES app</h2>
+      <form onSubmit={ (e) => handleSubmit(e) } className="login-form">
+        <h3>Login</h3>
+        <label htmlFor="email-input">
+          <input
+            type="email"
+            value={ user.email }
+            id="email-input"
+            className="text-input"
+            placeholder="E-mail"
+            onChange={ ({ target: { value } }) => {
+              setUser({ ...user, email: value });
+              handleValidation();
+            } }
+            data-testid="email-input"
+          />
+        </label>
+        <label htmlFor="password-input">
+          <input
+            type="password"
+            value={ user.password }
+            id="password-input"
+            className="text-input"
+            placeholder="Password"
+            onChange={ ({ target: { value } }) => {
+              setUser({ ...user, password: value });
+              handleValidation();
+            } }
+            data-testid="password-input"
+          />
+        </label>
+        <button
+          type="submit"
+          data-testid="login-submit-btn"
+          disabled={ isDisabled }
+          className="btn-1"
+        >
+          Entrar
+        </button>
+      </form>
+    </section>
   );
 }
 
