@@ -1,0 +1,22 @@
+.header-bar {
+  align-items: center;
+  background-color: #fb0;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.header-icons {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+}
+
+.header-body {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem auto;
+  width: 90%;
+}
