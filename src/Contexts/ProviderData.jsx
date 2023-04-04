@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {
   mealsCategories,
   mealsIngredients,
-  mealsNationalities } from '../Services/ApiRequest';
+  mealsNationalities,
+} from '../Services/ApiRequest';
 import ContextData from './ContextData';
 
 function ProviderData({ children }) {
@@ -14,7 +15,6 @@ function ProviderData({ children }) {
     ingredients: null,
   });
   // const [dataDrinks, setDataDrinks] = useState(null);
-
   useEffect(() => {
     const requestMeals = async () => {
       const categories = await mealsCategories();
