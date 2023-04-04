@@ -8,7 +8,7 @@ body .root {
   align-items: center;
   background-color: #efefef;
   display: flex;
-  font-family: sans-serif;
+  font-family: system-ui , sans-serif;
   height: 100vh;
   justify-content: center;
   width: 100vw;
@@ -16,7 +16,20 @@ body .root {
 
 .app {
   background-color: white;
+  border-radius: 10px;
   height: 640px;
-  padding: 1rem;
+  overflow: hidden;
   width: 350px;
+}
+
+h1, h2, h3, h4 {
+  color: #7b38df;
+  font-weight: 800;
+}
+
+.text-input {
+  border: #7b38df solid 1px;
+  border-radius: 5px;
+  padding: 7px 10px;
+  width: 100%;
 }
