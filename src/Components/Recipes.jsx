@@ -2,8 +2,6 @@ import PropTypes from 'prop-types';
 import './recipes.css';
 
 function Recipes({ path, recipes }) {
-  console.log(recipes);
-
   return (
     <section className="recipes-grid">
       { recipes?.map((recipe, idx) => (
