@@ -5,7 +5,20 @@ function Profile() {
   return (
     <>
       <Header title="Profile" />
-      <h1>Página do Perfil</h1>
+      <section className="profile-page">
+        <div className="profile-card">
+          <h3 data-testid="profile-email">email@example.com</h3>
+          <button type="button" data-testid="profile-done-btn">
+            Done Recipes
+          </button>
+          <button type="button" data-testid="profile-favorite-btn">
+            Favorite Recipes
+          </button>
+          <button type="button" data-testid="profile-logout-btn">
+            Logout
+          </button>
+        </div>
+      </section>
       <Footer />
     </>
   );
