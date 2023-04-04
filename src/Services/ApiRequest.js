@@ -32,3 +32,10 @@ export const searchDrinkId = async (id) => {
 
   return data;
 };
+
+export const searchMealsId = async (id) => {
+  const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+  const data = await response.json();
+
+  return data;
+};

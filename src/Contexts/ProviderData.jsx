@@ -25,14 +25,16 @@ function ProviderData({ children }) {
         setDataMeals({ categories, nationalities, ingredients });
       }
     };
-    console.log(dataMeals);
+    // console.log(dataMeals);
     requestMeals();
   }, []);
 
-  console.log(dataMeals);
+  // console.log(dataMeals);
 
   return (
-    <ContextData.Provider value={ dataMeals }>
+    <ContextData.Provider
+      value={ dataMeals }
+    >
       { children }
     </ContextData.Provider>
   );
