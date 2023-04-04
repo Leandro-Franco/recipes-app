@@ -16,7 +16,7 @@ body .root {
 
 .app {
   background-color: white;
-  border-radius: 10px;
+  border-radius: 15px;
   height: 640px;
   overflow: hidden;
   position: relative;
