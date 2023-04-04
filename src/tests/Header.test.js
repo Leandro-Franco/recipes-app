@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import Meals from '../Pages/Meals';
-// import App from '../App';
+import Drinks from '../Pages/Drinks';
 
 describe('Verifica o Header da aplicação', () => {
   it('Verifica se o componente Header é renderizado na página /meals', () => {
@@ -54,31 +54,19 @@ describe('Verifica o Header da aplicação', () => {
     expect(route).toBe('/profile');
   });
 
-  //   it(
-  //     'Será validado se o componente Header é renderizado na página /profile',
-  //     async () => {
-  //       renderPath('/profile');
+  it('Verifica o título é renderizado de acordo com a rota /meals', () => {
+    render(<Meals />);
 
-  //       await waitFor(
-  //         () => expect(screen.queryAllByText('Carregando...')).toHaveLength(0),
-  //         { timeout: 3000 },
-  //       );
+    const heading = screen.getByRole('heading', { level: 2 });
 
-  //       expect(screen.getByTestId('header-component')).toBeInTheDocument();
-  //     },
-  //   );
+    expect(heading).toBeInTheDocument();
+  });
 
-  //   it(
-  //     'Será validado se o componente Header é renderizado na página /profile/edit',
-  //     async () => {
-  //       renderPath('/profile/edit');
+  it('Verifica o título é renderizado de acordo com a rota /drinks', () => {
+    render(<Drinks />);
 
-  //       await waitFor(
-  //         () => expect(screen.queryAllByText('Carregando...')).toHaveLength(0),
-  //         { timeout: 3000 },
-  //       );
+    const heading = screen.getByRole('heading', { level: 2 });
 
-//       expect(screen.getByTestId('header-component')).toBeInTheDocument();
-//     },
-//   );
+    expect(heading).toBeInTheDocument();
+  });
 });
