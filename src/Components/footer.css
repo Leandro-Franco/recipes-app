@@ -1,0 +1,16 @@
+.footer-bar {
+  align-items: center;
+  background-color: #7b38df;
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  height: 65px;
+  justify-content: space-evenly;
+  padding: 1rem 0;
+  position: fixed;
+  width: 350px;
+}
+
+.absolute-bar {
+  bottom: 65px;
+  position: absolute;
+}

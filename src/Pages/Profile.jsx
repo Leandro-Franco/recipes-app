@@ -1,3 +1,4 @@
+import Footer from '../Components/Footer';
 import Header from '../Components/Header';
 
 function Profile() {
@@ -5,6 +6,7 @@ function Profile() {
     <>
       <Header title="Profile" />
       <h1>Página do Perfil</h1>
+      <Footer />
     </>
   );
 }
