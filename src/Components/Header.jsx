@@ -1,11 +1,14 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import './header.css';
+
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
-import './header.css';
 
 function Header({ title }) {
   const [showSearchInput, setShowSearchInput] = useState(false);
+  const history = useHistory();
 
   return (
     <header>
@@ -21,10 +24,12 @@ function Header({ title }) {
             onClick={ () => setShowSearchInput(!showSearchInput) }
             data-testid="search-top-btn"
           />}
-          <img
+          <input
+            type="image"
             src={ profileIcon }
             alt="profile"
             width="25px"
+            onClick={ () => history.push('/profile') }
             data-testid="profile-top-btn"
           />
         </div>
