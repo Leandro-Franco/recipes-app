@@ -5,6 +5,7 @@ import './header.css';
 
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 
 function Header({ title }) {
   const [showSearchInput, setShowSearchInput] = useState(false);
@@ -37,12 +38,7 @@ function Header({ title }) {
       <section className="header-body">
         <h2 data-testid="page-title">{ title }</h2>
         { showSearchInput
-          && <input
-            type="text"
-            className="text-input"
-            placeholder="Search"
-            data-testid="search-input"
-          />}
+          && <SearchBar />}
       </section>
     </header>
   );
