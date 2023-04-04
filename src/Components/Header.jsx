@@ -41,8 +41,7 @@ function Header({ title }) {
             type="text"
             className="text-input"
             placeholder="Search"
-            // value={ search }
-            // onChange={ ({ target: { value } }) => setSearch(value) }
+            data-testid="search-input"
           />}
       </section>
     </header>
