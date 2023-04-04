@@ -1,0 +1,22 @@
+.recipes-grid {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.recipes-card {
+  background-color: #fefefe;
+  border: solid #efefef 1px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-img {
+  width: 155px;
+}
+
+.card-text {
+  font-size: 14px;
+  padding: 1px 10px 5px;
+}

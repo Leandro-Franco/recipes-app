@@ -13,7 +13,7 @@ function Header({ title }) {
   return (
     <header>
       <section className="header-bar">
-        <h3>RECIPIES app</h3>
+        <h3>RECIPES app</h3>
         <div className="header-icons">
           {(title === 'Meals' || title === 'Drinks')
           && <input
