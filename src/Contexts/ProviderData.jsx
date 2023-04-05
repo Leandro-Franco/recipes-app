@@ -4,6 +4,8 @@ import {
   mealsCategories,
   mealsIngredients,
   mealsNationalities,
+  searchDrinkId,
+  searchMealId,
 } from '../Services/ApiRequest';
 import ContextData from './ContextData';
 
@@ -15,6 +17,26 @@ function ProviderData({ children }) {
     ingredients: null,
   });
   // const [dataDrinks, setDataDrinks] = useState(null);
+
+  const [detailRecipes, setDetailRecipes] = useState(null);
+  // const id = 52771;
+  // const n2 = 178319;
+
+  const fetchRecipeDetails = async (id, type) => {
+    const food = await searchMealId(id);
+    const drinks = await searchDrinkId(id);
+    const results = type === 'drinks' ? drinks : food;
+    const detail = results.drinks ? results.drinks[0] : results.meals[0];
+
+    if (detail) {
+      setDetailRecipes(detail);
+    }
+  };
+
+  fetchRecipeDetails();
+
+  console.log(detailRecipes);
+
   useEffect(() => {
     const requestMeals = async () => {
       const categories = await mealsCategories();
@@ -33,7 +55,7 @@ function ProviderData({ children }) {
 
   return (
     <ContextData.Provider
-      value={ dataMeals }
+      value={ { dataMeals, detailRecipes, fetchRecipeDetails } }
     >
       { children }
     </ContextData.Provider>
