@@ -59,3 +59,8 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.detail-img {
+  max-width: 360px;
+  position: absolute;
+}

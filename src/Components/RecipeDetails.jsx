@@ -1,4 +1,5 @@
 import { useFilter } from '../Contexts/ProviderFilter';
+import './recipes.css';
 
 function RecipeDetails() {
   const { detailRecipes } = useFilter();
@@ -21,17 +22,20 @@ function RecipeDetails() {
 
   return (
     <div>
-      <img
-        src={ strMealThumb || strDrinkThumb }
-        alt={ strMeal || strDrink }
-        data-testid="recipe-photo"
-      />
-      <h1 data-testid="recipe-title">
-        {strMeal || strDrink}
-      </h1>
-      <p data-testid="recipe-category">
-        {strCategory}
-      </p>
+      <div>
+        <img
+          src={ strMealThumb || strDrinkThumb }
+          alt={ strMeal || strDrink }
+          data-testid="recipe-photo"
+          className="detail-img"
+        />
+        <h1 data-testid="recipe-title">
+          {strMeal || strDrink}
+        </h1>
+        <p data-testid="recipe-category">
+          {strCategory}
+        </p>
+      </div>
       <p data-testid="index-ingredient-name-and-measure">
         Ingredientes
       </p>
