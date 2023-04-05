@@ -19,8 +19,6 @@ function useRecipeInProgress(type, id) {
 
       initialRecipeInProgress[type][id] = [];
       setRecipeInProgress(initialRecipeInProgress);
-
-      setRecipeInProgress(initialRecipeInProgress);
     }
   }, [id, type]);
 
@@ -28,7 +26,7 @@ function useRecipeInProgress(type, id) {
     localStorage.setItem('inProgressRecipes', JSON.stringify(recipeInProgress));
   }, [recipeInProgress]);
 
-  return [recipeInProgress, setRecipeInProgress];
+  return recipeInProgress;
 }
 
 export default useRecipeInProgress;
