@@ -12,7 +12,7 @@ function SearchBar() {
   const {
     dataSearch,
     setDataSearch,
-    // resultsOfSearch,
+    resultsOfSearch,
     setResultsOfSearch,
   } = useContext(context);
 

@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useContext } from 'react';
-import ContextData from '../Contexts/ContextData';
+import context from '../Contexts/ProviderData';
 
 function RecipeDetails() {
   const { id, type } = useParams();
-  const { detailRecipes, fetchRecipeDetails } = useContext(ContextData);
+  const { detailRecipes, fetchRecipeDetails } = useContext(context);
 
   useEffect(() => {
     fetchRecipeDetails(id, type);
