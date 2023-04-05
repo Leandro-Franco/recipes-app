@@ -1,12 +1,13 @@
 import { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import context from '../Contexts/ProviderData';
-import { searchDrinkFirstLetter,
+import { searchDrinkFirtsLetter,
   searchDrinkName,
   searchDrinkIngredient,
   searchMealsFirtsLetter,
   searchMealsIngredients,
   searchMealsName } from '../Services/ApiRequest';
+import { useFilter } from '../Contexts/ProviderFilter';
 
 function SearchBar() {
   const {
@@ -16,13 +17,19 @@ function SearchBar() {
     setResultsOfSearch,
   } = useContext(context);
 
+  const { setCategoryFilter } = useFilter();
+
   const history = useHistory();
   const page = (history.location.pathname);
 
-  const testResults = () => {
-    if (!resultsOfSearch) {
-      return global.alert('Sorry, we haven\'t found any recipes for these filters.');
+  const redirector = async () => {
+    if (await resultsOfSearch.length === 1) {
+      history.push(page === '/meals'
+        ? `/meals/${resultsOfSearch[0].idMeal}`
+        : `/drinks/${resultsOfSearch[0].idDrink}`);
     }
+    const maxSize = 12;
+    setCategoryFilter(resultsOfSearch.slice(0, maxSize));
   };
 
   const handleSubmit = async (event, option, text, local) => {
@@ -30,11 +37,11 @@ function SearchBar() {
     if (local === '/drinks') {
       switch (option) {
       case 'ingredient':
-        return (setResultsOfSearch(await searchDrinkIngredient(text)), testResults());
+        return (setResultsOfSearch(await searchDrinkIngredient(text)), redirector());
       case 'name':
-        return (setResultsOfSearch(await searchDrinkName(text)), testResults());
+        return (setResultsOfSearch(await searchDrinkName(text)), redirector());
       case 'firstLetter':
-        return (setResultsOfSearch(await searchDrinkFirstLetter(text)), testResults());
+        return (setResultsOfSearch(await searchDrinkFirtsLetter(text)), redirector());
       default:
         return console.log('default');
       }
@@ -42,11 +49,11 @@ function SearchBar() {
     if (local === '/meals') {
       switch (option) {
       case 'ingredient':
-        return (setResultsOfSearch(await searchMealsIngredients(text)), testResults());
+        return (setResultsOfSearch(await searchMealsIngredients(text)), redirector());
       case 'name':
-        return (setResultsOfSearch(await searchMealsName(text)), testResults());
+        return (setResultsOfSearch(await searchMealsName(text)), redirector());
       case 'firstLetter':
-        return (setResultsOfSearch(await searchMealsFirtsLetter(text)), testResults());
+        return (setResultsOfSearch(await searchMealsFirtsLetter(text)), redirector());
       default:
         return console.log('default');
       }

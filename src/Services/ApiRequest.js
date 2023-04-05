@@ -1,3 +1,5 @@
+const warming = 'Sorry, we haven\'t found any recipes for these filters.';
+
 export const getMealsCategories = async () => {
   const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
   const data = await response.json();
@@ -16,14 +18,27 @@ export const searchMealsIngredients = async (ingredient) => {
   const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`);
   const data = await response.json();
 
-  return data;
+  if (!data.meals) {
+    return global.alert(warming);
+  } return data.meals;
 };
 
 export const searchMealsName = async (name) => {
   const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`);
   const data = await response.json();
 
-  return data.meals;
+  if (!data.meals) {
+    return global.alert(warming);
+  } return data.meals;
+};
+
+export const searchDrinkName = async (name) => {
+  const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${name}`);
+  const data = await response.json();
+
+  if (!data.drinks) {
+    return global.alert(warming);
+  } return data.drinks;
 };
 
 export const searchMealsFirtsLetter = async (letter) => {
@@ -34,7 +49,19 @@ export const searchMealsFirtsLetter = async (letter) => {
     const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${letter}`);
     const data = await response.json();
 
-    return data;
+    return data.meals;
+  } return null;
+};
+
+export const searchDrinkFirtsLetter = async (letter) => {
+  if (letter.length > 1) {
+    return global.alert('Your search must have only 1 (one) character');
+  }
+  if (letter.length === 1) {
+    const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${letter}`);
+    const data = await response.json();
+
+    return data.drinks;
   } return null;
 };
 
@@ -42,21 +69,9 @@ export const searchDrinkIngredient = async (ingredient) => {
   const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`);
   const data = await response.json();
 
-  return data;
-};
-
-export const searchDrinkId = async (id) => {
-  const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
-  const data = await response.json();
-
-  return data;
-};
-
-export const searchMealId = async (id) => {
-  const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
-  const data = await response.json();
-
-  return data;
+  if (!data.drinks) {
+    return global.alert(warming);
+  } return data.drinks;
 };
 
 export const getMealsRecipes = async () => {
