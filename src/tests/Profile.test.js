@@ -40,8 +40,8 @@ describe('Profile component', () => {
         <Profile />
       </Router>,
     );
-    const favoriteBtn = screen.getByTestId('profile-done-btn');
-    userEvent.click(favoriteBtn);
+    const doneBtn = screen.getByTestId('profile-done-btn');
+    userEvent.click(doneBtn);
     expect(history.location.pathname).toBe('/done-recipes');
   });
 
@@ -58,5 +58,13 @@ describe('Profile component', () => {
     expect(history.location.pathname).toBe('/');
     expect(localStorage.getItem('user')).toBe(null);
     expect(localStorage.getItem('mealsToken')).toBe(null);
+  });
+
+  it('deve renderizar o email de usuário padrão quando não há usuário logado', () => {
+    localStorage.removeItem('user');
+    render(<Profile />);
+    const userEmail = screen.getByTestId('profile-email');
+    expect(userEmail).toBeInTheDocument();
+    expect(userEmail.textContent).toBe('emailTestegmail.com');
   });
 });
