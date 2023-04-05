@@ -1,18 +1,11 @@
-import { useParams } from 'react-router-dom';
-import { useEffect, useContext } from 'react';
-import context from '../Contexts/ProviderData';
+import { useFilter } from '../Contexts/ProviderFilter';
 
 function RecipeDetails() {
-  const { id, type } = useParams();
-  const { detailRecipes, fetchRecipeDetails } = useContext(context);
-
-  useEffect(() => {
-    fetchRecipeDetails(id, type);
-  }, [fetchRecipeDetails, id, type]);
+  const { detailRecipes } = useFilter();
 
   console.log(detailRecipes);
 
-  if (!detailRecipes.detail) {
+  if (!detailRecipes) {
     return <div>Loading...</div>;
   }
 
@@ -24,7 +17,7 @@ function RecipeDetails() {
     strCategory,
     strInstructions,
     strYoutube,
-  } = detailRecipes.detail;
+  } = detailRecipes;
 
   return (
     <div>

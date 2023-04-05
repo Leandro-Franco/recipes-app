@@ -8,9 +8,12 @@ import { Provider } from './Contexts/ProviderData';
 ReactDOM
   .createRoot(document.getElementById('root'))
   .render(
-    <Provider>
-      <App />
-    </Provider>,
+    <div className="app">
+      <Provider>
+        <App />
+      </Provider>
+    </div>,
+
   );
 
 // If you want your app to work offline and load faster, you can change

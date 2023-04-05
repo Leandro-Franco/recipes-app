@@ -3,27 +3,35 @@ import Footer from '../Components/Footer';
 import Header from '../Components/Header';
 import { Results } from '../Components/Results';
 import Recipes from '../Components/Recipes';
-import { getMealsRecipes } from '../Services/ApiRequest';
+import { getMealsCategories, getMealsRecipes } from '../Services/ApiRequest';
+import { useFilter } from '../Contexts/ProviderFilter';
 
 function Meals() {
   const [mealsRecipes, setMealsRecipes] = useState([]);
+  const [mealsCategories, setMealsCategories] = useState([]);
+  const { setCategoryFilter } = useFilter();
 
   useEffect(() => {
     const requestMeals = async () => {
       const eleven = 11;
-      const response = await getMealsRecipes();
-      setMealsRecipes(response.filter((_, idx) => idx <= eleven));
+      const four = 4;
+      const recipesRes = await getMealsRecipes();
+      const categoriesRes = await getMealsCategories();
+      setMealsRecipes(recipesRes.filter((_, idx) => idx <= eleven));
+      setMealsCategories(categoriesRes.filter((_, idx) => idx <= four));
+      setCategoryFilter(recipesRes.filter((_, idx) => idx <= eleven));
     };
-
     requestMeals();
   }, []);
 
   return (
     <>
       <Header title="Meals" />
-      <Results />
-      {/* adicionar modo de alternar entre results e recipes */}
-      <Recipes path="Meal" recipes={ mealsRecipes } />
+      <Recipes
+        path="Meal"
+        recipes={ mealsRecipes }
+        categories={ mealsCategories }
+      />
       <Footer />
     </>
   );
