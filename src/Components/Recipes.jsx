@@ -1,15 +1,25 @@
 import PropTypes from 'prop-types';
 import './recipes.css';
+import { useFilter } from '../Contexts/ProviderFilter';
 
 function Recipes({ path, recipes, categories }) {
+  const { categoryFilter, setCategoryFilter } = useFilter();
+
+  console.log(categories);
+
   return (
     <>
       <section className="category-filter">
         { categories?.map((category) => (
           <button
+            type="button"
             key={ category.strCategory }
             data-testid={ `${category.strCategory}-category-filter` }
             className="category-btn"
+            onClick={ () => {
+              setCategoryFilter({
+                ...categoryFilter, [`${path}Filter`]: category.strCategory });
+            } }
           >
             {category.strCategory}
           </button>
