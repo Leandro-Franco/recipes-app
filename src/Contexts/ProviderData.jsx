@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
+  drinksCategories,
   mealsCategories,
   mealsIngredients,
   mealsNationalities } from '../Services/ApiRequest';
@@ -8,12 +9,8 @@ import ContextData from './ContextData';
 
 function ProviderData({ children }) {
   // const [user, setUser] = useState({});
-  const [dataMeals, setDataMeals] = useState({
-    categories: null,
-    nationalities: null,
-    ingredients: null,
-  });
-  // const [dataDrinks, setDataDrinks] = useState(null);
+  const [dataMeals, setDataMeals] = useState(null);
+  const [dataDrinks, setDataDrinks] = useState(null);
 
   useEffect(() => {
     const requestMeals = async () => {
@@ -23,20 +20,26 @@ function ProviderData({ children }) {
 
       if (ingredients) {
         setDataMeals({ categories, nationalities, ingredients });
+        setDataDrinks(await drinksCategories());
       }
     };
-    console.log(dataMeals);
+
     requestMeals();
   }, []);
 
-  console.log(dataMeals);
+  const values = useMemo(() => ({
+    dataMeals,
+    dataDrinks,
+  }), [dataDrinks, dataMeals]);
 
   return (
-    <ContextData.Provider value={ dataMeals }>
+    <ContextData.Provider value={ values }>
       { children }
     </ContextData.Provider>
   );
 }
+
+export const useData = () => useContext(ContextData);
 
 ProviderData.propTypes = { children: PropTypes.node }.isRequired;
 

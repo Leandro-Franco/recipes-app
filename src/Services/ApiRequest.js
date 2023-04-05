@@ -2,21 +2,21 @@ export const mealsCategories = async () => {
   const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
   const data = await response.json();
 
-  return data;
+  return data.meals;
 };
 
 export const mealsNationalities = async () => {
   const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?a=list');
   const data = await response.json();
 
-  return data;
+  return data.meals;
 };
 
 export const mealsIngredients = async () => {
   const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?i=list');
   const data = await response.json();
 
-  return data;
+  return data.meals;
 };
 
 export const searchDrinkIngredient = async (ingredient) => {
@@ -42,6 +42,13 @@ export const getMealsRecipes = async () => {
 
 export const getDrinksRecipes = async () => {
   const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+  const data = await response.json();
+
+  return data.drinks;
+};
+
+export const drinksCategories = async () => {
+  const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
   const data = await response.json();
 
   return data.drinks;

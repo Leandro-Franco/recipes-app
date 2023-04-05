@@ -1,8 +1,22 @@
+.category-filter {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.category-btn {
+  font-size: 12px;
+  margin: 0 0 0.5rem;
+  max-width: 70px;
+  padding: 0.3rem 0.5rem;
+}
+
 .recipes-grid {
   display: flex;
   flex-flow: row wrap;
   gap: 1rem;
-  height: calc(100vh - 500px);
+  height: calc(100vh - 530px);
   justify-content: center;
   overflow: auto;
   -ms-overflow-style: none;
