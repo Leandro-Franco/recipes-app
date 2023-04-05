@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   mealsCategories,
-  mealsIngredients,
+  searchMealsIngredients,
   mealsNationalities } from '../Services/ApiRequest';
-import ContextData from './ContextData';
 
-function ProviderData({ children }) {
+const context = createContext();
+
+export default context;
+
+export function Provider({ children }) {
   // const [user, setUser] = useState({});
   const [dataMeals, setDataMeals] = useState({
     categories: null,
@@ -15,29 +18,44 @@ function ProviderData({ children }) {
   });
   // const [dataDrinks, setDataDrinks] = useState(null);
 
-  useEffect(() => {
-    const requestMeals = async () => {
-      const categories = await mealsCategories();
-      const nationalities = await mealsNationalities();
-      const ingredients = await mealsIngredients();
+  const [dataSearch, setDataSearch] = useState({
+    textSearch: '',
+    searchOptions: '',
+  });
 
-      if (ingredients) {
-        setDataMeals({ categories, nationalities, ingredients });
-      }
-    };
-    console.log(dataMeals);
+  const [resultsOfSearch, setResultsOfSearch] = useState([]);
+
+  const requestMeals = async () => {
+    const categories = await mealsCategories();
+    const nationalities = await mealsNationalities();
+    const ingredients = await searchMealsIngredients();
+
+    if (ingredients) {
+      setDataMeals({ categories, nationalities, ingredients });
+    }
+  };
+
+  useEffect(() => {
     requestMeals();
   }, []);
 
-  console.log(dataMeals);
+  const data = useMemo(() => ({
+    dataMeals,
+    dataSearch,
+    resultsOfSearch,
+    setDataSearch,
+    setResultsOfSearch,
+  }), [dataMeals, dataSearch, resultsOfSearch]);
 
   return (
-    <ContextData.Provider value={ dataMeals }>
+    <context.Provider
+      value={ data }
+    >
       { children }
-    </ContextData.Provider>
+    </context.Provider>
   );
 }
 
-ProviderData.propTypes = { children: PropTypes.node }.isRequired;
-
-export default ProviderData;
+Provider.propTypes = {
+  children: PropTypes.node,
+}.isRequired;
