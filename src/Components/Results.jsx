@@ -12,9 +12,22 @@ export function Results() {
 
   const maxSize = 12;
 
+  const redirector = async () => {
+    if ((resultsOfSearch.drinks)
+    && page === '/drinks' && resultsOfSearch.drinks.length === 1) {
+      return history.push(`/drinks/${await resultsOfSearch.drinks[0].idDrink}`);
+    }
+    if ((resultsOfSearch.meals)
+    && page === '/meals' && resultsOfSearch.meals.length === 1) {
+      return history.push(`/meals/${await resultsOfSearch.meals[0].idMeal}`);
+    }
+  };
+
   if (page === '/drinks' && resultsOfSearch.drinks) {
     const arrayDrinks = (resultsOfSearch.drinks).slice(0, maxSize);
-
+    if (arrayDrinks.length === 1) {
+      redirector();
+    }
     return (
       <div
         style={ {
@@ -51,7 +64,9 @@ export function Results() {
   }
   if (page === '/meals' && resultsOfSearch.meals) {
     const arrayMeals = (resultsOfSearch.meals).slice(0, maxSize);
-
+    if (arrayMeals.length === 1) {
+      redirector();
+    }
     return (
       <div
         style={ {
@@ -78,7 +93,7 @@ export function Results() {
               <h2
                 data-testid={ `${index}-card-name` }
               >
-                { meals.idMeal }
+                { meals.strMeal }
               </h2>
             </div>
           ))

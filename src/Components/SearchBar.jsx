@@ -12,21 +12,16 @@ function SearchBar() {
   const {
     dataSearch,
     setDataSearch,
-    resultsOfSearch,
+    // resultsOfSearch,
     setResultsOfSearch,
   } = useContext(context);
 
   const history = useHistory();
   const page = (history.location.pathname);
 
-  const redirector = async () => {
-    if ((resultsOfSearch.drinks)
-    && page === '/drinks' && resultsOfSearch.drinks.length === 1) {
-      return history.push(`/drinks/${await resultsOfSearch.drinks[0].idDrink}`);
-    }
-    if ((resultsOfSearch.meals)
-    && page === '/meals' && resultsOfSearch.meals.length === 1) {
-      return history.push(`/meals/${await resultsOfSearch.meals[0].idMeal}`);
+  const testResults = () => {
+    if (!resultsOfSearch) {
+      return global.alert('Sorry, we haven\'t found any recipes for these filters.');
     }
   };
 
@@ -35,11 +30,11 @@ function SearchBar() {
     if (local === '/drinks') {
       switch (option) {
       case 'ingredient':
-        return (setResultsOfSearch(await searchDrinkIngredient(text)), redirector());
+        return (setResultsOfSearch(await searchDrinkIngredient(text)), testResults());
       case 'name':
-        return (setResultsOfSearch(await searchDrinkName(text)), redirector());
+        return (setResultsOfSearch(await searchDrinkName(text)), testResults());
       case 'firstLetter':
-        return (setResultsOfSearch(await searchDrinkFirstLetter(text)), redirector());
+        return (setResultsOfSearch(await searchDrinkFirstLetter(text)), testResults());
       default:
         return console.log('default');
       }
@@ -47,11 +42,11 @@ function SearchBar() {
     if (local === '/meals') {
       switch (option) {
       case 'ingredient':
-        return (setResultsOfSearch(await searchMealsIngredients(text)), redirector());
+        return (setResultsOfSearch(await searchMealsIngredients(text)), testResults());
       case 'name':
-        return (setResultsOfSearch(await searchMealsName(text)), redirector());
+        return (setResultsOfSearch(await searchMealsName(text)), testResults());
       case 'firstLetter':
-        return (setResultsOfSearch(await searchMealsFirtsLetter(text)), redirector());
+        return (setResultsOfSearch(await searchMealsFirtsLetter(text)), testResults());
       default:
         return console.log('default');
       }
