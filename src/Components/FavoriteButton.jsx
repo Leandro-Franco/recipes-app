@@ -6,7 +6,10 @@ import blackHeartIcon from '../images/blackHeartIcon.svg';
 function FavoriteButton({ isFavorite, onClick }) {
   return (
     <button type="button" onClick={ onClick } data-testid="favorite-btn">
-      {isFavorite ? blackHeartIcon : whiteHeartIcon }
+      {
+        isFavorite ? <img src={ blackHeartIcon } alt="favorite" />
+          : <img src={ whiteHeartIcon } alt="not favorite" />
+      }
     </button>
   );
 }

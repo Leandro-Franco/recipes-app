@@ -60,3 +60,29 @@ export const getById = async (url, type) => {
 
   return type === 'Meal' ? data.meals[0] : data.drinks[0];
 };
+
+export const fetchIngredients = async (id, type) => {
+  const apiUrl = type === 'meal'
+    ? `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
+    : `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
+
+  const response = await fetch(apiUrl);
+  const data = await response.json();
+
+  const ingredients = [];
+  const measures = [];
+
+  // Obtém os ingredientes e medidas do objeto retornado pela API
+  const maxIngredients = 20;
+  for (let i = 1; i <= maxIngredients; i += 1) {
+    const ingredient = data[type === 'meal' ? 'meals' : 'drinks'][0][`strIngredient${i}`];
+    const measure = data[type === 'meal' ? 'meals' : 'drinks'][0][`strMeasure${i}`];
+
+    if (ingredient && measure) {
+      ingredients.push(ingredient);
+      measures.push(measure);
+    }
+  }
+
+  return { ingredients, measures };
+};

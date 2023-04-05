@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-function IngredientList() {
-  const { ingredients } = useContext(ContextData);
+function IngredientList({ ingredients }) {
   return (
     <ul>
       {ingredients.map((ingredient, index) => (
@@ -12,5 +12,14 @@ function IngredientList() {
     </ul>
   );
 }
+
+IngredientList.propTypes = {
+  ingredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      measure: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+};
 
 export default IngredientList;

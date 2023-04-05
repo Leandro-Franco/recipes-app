@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function useRecipeInProgress(type, id) {
   const [recipeInProgress, setRecipeInProgress] = useState({});
@@ -9,16 +9,16 @@ function useRecipeInProgress(type, id) {
       setRecipeInProgress(inProgressRecipes[type][id]);
     } else {
       const initialRecipeInProgress = {
-        cocktails: [],
-        meals: [],
+        drinks: {},
+        meals: {},
       };
 
-      initialRecipeInProgress[type] = [
-        {
-          id,
-          inProgress: '',
-        },
-      ];
+      if (!initialRecipeInProgress[type]) {
+        initialRecipeInProgress[type] = {};
+      }
+
+      initialRecipeInProgress[type][id] = [];
+      setRecipeInProgress(initialRecipeInProgress);
 
       setRecipeInProgress(initialRecipeInProgress);
     }

@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import useRecipeInProgress from '../hooks/useRecipeInProgress';
 import ShareButton from '../Components/ShareButton';
@@ -7,23 +6,59 @@ import FavoriteButton from '../Components/FavoriteButton';
 import IngredientList from '../Components/IngredientList';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
+import { fetchIngredients } from '../Services/ApiRequest';
 
 function RecipeInProgress() {
   const { id, type } = useParams();
-  const { recipe, loading, error } = useRecipeInProgress(type, id);
+  const [recipeInProgress, setRecipeInProgress] = useRecipeInProgress(type, id);
   const history = useHistory();
+  const [ingredients, setIngredients] = useState([]);
 
-  if (loading) return <p>Loading...</p>;
+  useEffect(() => {
+    const fetchIngredientsData = async () => {
+      const fetchedIngredients = await fetchIngredients(type === 'meal' ? 's' : '', id);
+      setIngredients(fetchedIngredients);
+    };
+    fetchIngredientsData();
+  }, [id, type]);
 
-  if (error) {
-    return (
-      <p>
-        Something went wrong:
-        {' '}
-        {error.message}
-      </p>
-    );
+  if (!recipeInProgress[type] || !recipeInProgress[type][id]) {
+    const maxIgredients = 20;
+    setRecipeInProgress({
+      ...recipeInProgress,
+      [type]: {
+        ...recipeInProgress[type],
+        [id]: Array(maxIgredients).fill(null),
+      },
+    });
   }
+
+  const handleIngredientCheck = (index) => {
+    const updatedRecipeInProgress = {
+      ...recipeInProgress,
+      [type]: {
+        ...recipeInProgress[type],
+        [id]: [
+          ...recipeInProgress[type][id].slice(0, index),
+          !recipeInProgress[type][id][index],
+          ...recipeInProgress[type][id].slice(index + 1),
+        ],
+      },
+    };
+    setRecipeInProgress(updatedRecipeInProgress);
+  };
+
+  const handleFinishRecipe = () => {
+    const updatedRecipeInProgress = {
+      ...recipeInProgress,
+      [type]: {
+        ...recipeInProgress[type],
+        [id]: [],
+      },
+    };
+    setRecipeInProgress(updatedRecipeInProgress);
+    history.push('/done-recipes');
+  };
 
   const {
     strMealThumb,
@@ -33,9 +68,8 @@ function RecipeInProgress() {
     strCategory,
     strAlcoholic,
     strInstructions,
-    ingredients,
     measures,
-  } = recipe;
+  } = recipeInProgress;
 
   function formatCategoryAndAlcoholicInfo(category, isAlcoholic) {
     if (category && isAlcoholic) {
@@ -47,10 +81,6 @@ function RecipeInProgress() {
     }
     return '';
   }
-
-  const handleFinishRecipe = () => {
-    history.push(`/receitas-feitas/${type}/${id}`);
-  };
 
   return (
     <>
@@ -67,7 +97,12 @@ function RecipeInProgress() {
         </div>
         <ShareButton type={ type } id={ id } testId="share-btn" />
         <FavoriteButton type={ type } id={ id } testId="favorite-btn" />
-        <IngredientList ingredients={ ingredients } measures={ measures } />
+        <IngredientList
+          ingredients={ ingredients }
+          measures={ measures }
+          checkedIngredients={ recipeInProgress[type]?.[id] ?? [] }
+          onIngredientCheck={ handleIngredientCheck }
+        />
         <p data-testid="instructions">{strInstructions}</p>
         <button
           type="button"
@@ -81,14 +116,5 @@ function RecipeInProgress() {
     </>
   );
 }
-
-RecipeInProgress.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      type: PropTypes.oneOf(['meal', 'drink']).isRequired,
-    }).isRequired,
-  }).isRequired,
-};
 
 export default RecipeInProgress;
