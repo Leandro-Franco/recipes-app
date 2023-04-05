@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
   mealsCategories,
@@ -18,24 +18,21 @@ function ProviderData({ children }) {
   });
   // const [dataDrinks, setDataDrinks] = useState(null);
 
-  const [detailRecipes, setDetailRecipes] = useState(null);
-  // const id = 52771;
-  // const n2 = 178319;
+  const [detailRecipes, setDetailRecipes] = useState({ detail: null });
+  // const id = 178319;
 
-  const fetchRecipeDetails = async (id, type) => {
+  const fetchRecipeDetails = useCallback(async (id, type) => {
     const food = await searchMealId(id);
     const drinks = await searchDrinkId(id);
     const results = type === 'drinks' ? drinks : food;
     const detail = results.drinks ? results.drinks[0] : results.meals[0];
 
     if (detail) {
-      setDetailRecipes(detail);
+      setDetailRecipes({ detail });
     }
-  };
+  }, []);
 
-  fetchRecipeDetails();
-
-  console.log(detailRecipes);
+  // console.log(detailRecipes);
 
   useEffect(() => {
     const requestMeals = async () => {

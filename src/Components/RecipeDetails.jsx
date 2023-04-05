@@ -12,38 +12,46 @@ function RecipeDetails() {
 
   console.log(detailRecipes);
 
+  if (!detailRecipes.detail) {
+    return <div>Loading...</div>;
+  }
+
+  const {
+    strMealThumb,
+    strDrinkThumb,
+    strMeal,
+    strDrink,
+    strCategory,
+    strInstructions,
+    strYoutube,
+  } = detailRecipes.detail;
+
   return (
     <div>
-      {detailRecipes ? (
-        <>
-          <img
-            src={ detailRecipes.strMealThumb || detailRecipes.strDrinkThumb }
-            alt={ detailRecipes.strMeal || detailRecipes.strDrink }
-            data-testid="recipe-photo"
-          />
-          <h1 data-testid="recipe-title">
-            {detailRecipes.strMeal || detailRecipes.strDrink}
-          </h1>
-          <p data-testid="recipe-category">
-            {detailRecipes.strCategory}
-          </p>
-          <p data-testid={ `${index}-ingredient-name-and-measure` }>
-            Ingredientes
-          </p>
-          <p data-testid="instructions">
-            {detailRecipes.strInstructions}
-          </p>
-          <video
-            controls
-            data-testid="video"
-          >
-            <source src={ `${detailRecipes.strYoutube}` } />
-            <track kind="captions" />
-          </video>
-        </>
-      ) : (
-        <p>Loading</p>
-      )}
+      <img
+        src={ strMealThumb || strDrinkThumb }
+        alt={ strMeal || strDrink }
+        data-testid="recipe-photo"
+      />
+      <h1 data-testid="recipe-title">
+        {strMeal || strDrink}
+      </h1>
+      <p data-testid="recipe-category">
+        {strCategory}
+      </p>
+      <p data-testid="index-ingredient-name-and-measure">
+        Ingredientes
+      </p>
+      <p data-testid="instructions">
+        {strInstructions}
+      </p>
+      <video
+        controls
+        data-testid="video"
+      >
+        <source src={ `${strYoutube}` } />
+        <track kind="captions" />
+      </video>
     </div>
   );
 }
