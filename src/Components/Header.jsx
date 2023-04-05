@@ -12,9 +12,9 @@ function Header({ title }) {
   const history = useHistory();
 
   return (
-    <header>
+    <header data-testid="header-component">
       <section className="header-bar">
-        <h3>RECIPIES app</h3>
+        <h3>RECIPES app</h3>
         <div className="header-icons">
           {(title === 'Meals' || title === 'Drinks')
           && <input
