@@ -1,0 +1,33 @@
+.profile-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+button {
+  background-color: #7b38df;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  margin: 10px;
+  padding: 10px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.button-container button {
+  flex: 1 0 auto;
+  max-width: 200px;
+}
+
+button:hover {
+  background-color: #7133cf;
+}
