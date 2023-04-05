@@ -4,7 +4,7 @@ import { MemoryRouter, Route } from 'react-router-dom';
 import RecipeInProgress from '../Pages/RecipeInProgress';
 
 describe.only('RecipeInProgress component', () => {
-  it('deve renderizar corretamente', () => {
+  it('deve renderizar corretamente na tela', () => {
     const mockedRecipeInProgress = {
       meal: {
         52771: {
