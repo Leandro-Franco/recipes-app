@@ -43,6 +43,7 @@
   background-color: #fefefe;
   border: solid #efefef 1px;
   border-radius: 10px;
+  max-height: 185px;
   max-width: 155px;
   overflow: hidden;
 }

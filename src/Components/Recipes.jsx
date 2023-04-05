@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types';
 import './recipes.css';
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useFilter } from '../Contexts/ProviderFilter';
 import { getByCategory } from '../Services/ApiRequest';
 
 function Recipes({ path, recipes, categories }) {
+  const history = useHistory();
   const [toggle, setToggle] = useState('');
-  const { categoryFilter, setCategoryFilter } = useFilter();
+  const { categoryFilter, setCategoryFilter, setRecipeId } = useFilter();
 
   const handleCategory = async (category) => {
     setToggle(category);
@@ -17,6 +19,7 @@ function Recipes({ path, recipes, categories }) {
 
     const filterRes = await getByCategory(url, path);
     setCategoryFilter(filterRes.filter((_, idx) => idx <= eleven));
+    console.log(categoryFilter);
   };
 
   const categoryVerify = (category) => {
@@ -57,6 +60,13 @@ function Recipes({ path, recipes, categories }) {
             key={ recipe[`id${path}`] }
             data-testid={ `${idx}-recipe-card` }
             className="recipes-card"
+            aria-hidden="true"
+            onClick={ () => {
+              setRecipeId({ id: recipe[`id${path}`], type: path });
+              history.push(path === 'Meal'
+                ? `/meals/${recipe.idMeal}`
+                : `/drinks/${recipe.idDrink}`);
+            } }
           >
             <img
               data-testid={ `${idx}-card-img` }

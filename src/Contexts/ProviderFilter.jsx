@@ -1,19 +1,43 @@
-import { useState, useEffect, useContext, useMemo } from 'react';
+import { useState, useContext, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { } from '../Services/ApiRequest';
+import { getById } from '../Services/ApiRequest';
 import ContextFilter from './ContextData';
 
 function ProviderFilter({ children }) {
   const [categoryFilter, setCategoryFilter] = useState([]);
+  const [recipeId, setRecipeId] = useState(null);
+  const [detailRecipes, setDetailRecipes] = useState({ detail: null });
+
+  console.log(recipeId);
 
   useEffect(() => {
+    const fetchRecipeDetails = async () => {
+      if (recipeId) {
+        const { id, type } = recipeId;
 
-  }, [categoryFilter]);
+        const url = type === 'Drink'
+          ? `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`
+          : `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+
+        setDetailRecipes(await getById(url, type));
+      }
+    };
+    fetchRecipeDetails();
+  }, [recipeId]);
 
   const values = useMemo(() => ({
     categoryFilter,
     setCategoryFilter,
-  }), [categoryFilter, setCategoryFilter]);
+    recipeId,
+    setRecipeId,
+    detailRecipes,
+  }), [
+    categoryFilter,
+    setCategoryFilter,
+    recipeId,
+    setRecipeId,
+    detailRecipes,
+  ]);
 
   return (
     <ContextFilter.Provider value={ values }>

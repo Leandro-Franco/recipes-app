@@ -26,20 +26,6 @@ export const searchDrinkIngredient = async (ingredient) => {
   return data;
 };
 
-export const searchDrinkId = async (id) => {
-  const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
-  const data = await response.json();
-
-  return data;
-};
-
-export const searchMealId = async (id) => {
-  const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
-  const data = await response.json();
-
-  return data;
-};
-
 export const getMealsRecipes = async () => {
   const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
   const data = await response.json();
@@ -66,4 +52,11 @@ export const getByCategory = async (url, path) => {
   const data = await response.json();
 
   return path === 'Meal' ? data.meals : data.drinks;
+};
+
+export const getById = async (url, type) => {
+  const response = await fetch(url);
+  const data = await response.json();
+
+  return type === 'Meal' ? data.meals[0] : data.drinks[0];
 };
