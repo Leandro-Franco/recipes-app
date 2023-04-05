@@ -1,12 +1,15 @@
 import PropTypes from 'prop-types';
 import './recipes.css';
+import { useState } from 'react';
 import { useFilter } from '../Contexts/ProviderFilter';
 import { getByCategory } from '../Services/ApiRequest';
 
 function Recipes({ path, recipes, categories }) {
+  const [toggle, setToggle] = useState('');
   const { categoryFilter, setCategoryFilter } = useFilter();
 
   const handleCategory = async (category) => {
+    setToggle(category);
     const eleven = 11;
     const url = path === 'Meal'
       ? `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`
@@ -14,6 +17,15 @@ function Recipes({ path, recipes, categories }) {
 
     const filterRes = await getByCategory(url, path);
     setCategoryFilter(filterRes.filter((_, idx) => idx <= eleven));
+  };
+
+  const categoryVerify = (category) => {
+    if (category !== toggle) {
+      handleCategory(category);
+    } else {
+      setCategoryFilter(recipes);
+      setToggle('');
+    }
   };
 
   return (
@@ -25,7 +37,7 @@ function Recipes({ path, recipes, categories }) {
             key={ category.strCategory }
             data-testid={ `${category.strCategory}-category-filter` }
             className="category-btn"
-            onClick={ () => handleCategory(category.strCategory) }
+            onClick={ () => categoryVerify(category.strCategory) }
           >
             {category.strCategory}
           </button>
