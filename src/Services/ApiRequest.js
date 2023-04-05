@@ -1,22 +1,22 @@
-export const mealsCategories = async () => {
+export const getMealsCategories = async () => {
   const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
   const data = await response.json();
 
-  return data;
+  return data.meals;
 };
 
-export const mealsNationalities = async () => {
+export const getMealsNationalities = async () => {
   const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?a=list');
   const data = await response.json();
 
-  return data;
+  return data.meals;
 };
 
-export const mealsIngredients = async () => {
+export const getMealsIngredients = async () => {
   const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?i=list');
   const data = await response.json();
 
-  return data;
+  return data.meals;
 };
 
 export const searchDrinkIngredient = async (ingredient) => {
@@ -25,19 +25,6 @@ export const searchDrinkIngredient = async (ingredient) => {
 
   return data;
 };
-
-export const searchDrinkId = async (id) => {
-  const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
-  const data = await response.json();
-
-  return data;
-};
-
-export const searchMealId = async (id) => {
-  const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
-  const data = await response.json();
-
-  return data;
 
 export const getMealsRecipes = async () => {
   const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
@@ -51,4 +38,25 @@ export const getDrinksRecipes = async () => {
   const data = await response.json();
 
   return data.drinks;
+};
+
+export const getDrinksCategories = async () => {
+  const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
+  const data = await response.json();
+
+  return data.drinks;
+};
+
+export const getByCategory = async (url, path) => {
+  const response = await fetch(url);
+  const data = await response.json();
+
+  return path === 'Meal' ? data.meals : data.drinks;
+};
+
+export const getById = async (url, type) => {
+  const response = await fetch(url);
+  const data = await response.json();
+
+  return type === 'Meal' ? data.meals[0] : data.drinks[0];
 };

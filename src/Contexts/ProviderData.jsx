@@ -1,63 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import {
-  mealsCategories,
-  mealsIngredients,
-  mealsNationalities,
-  searchDrinkId,
-  searchMealId,
-} from '../Services/ApiRequest';
 import ContextData from './ContextData';
 
 function ProviderData({ children }) {
   // const [user, setUser] = useState({});
-  const [dataMeals, setDataMeals] = useState({
-    categories: null,
-    nationalities: null,
-    ingredients: null,
-  });
-  // const [dataDrinks, setDataDrinks] = useState(null);
 
-  const [detailRecipes, setDetailRecipes] = useState({ detail: null });
-  // const id = 178319;
-
-  const fetchRecipeDetails = useCallback(async (id, type) => {
-    const food = await searchMealId(id);
-    const drinks = await searchDrinkId(id);
-    const results = type === 'drinks' ? drinks : food;
-    const detail = results.drinks ? results.drinks[0] : results.meals[0];
-
-    if (detail) {
-      setDetailRecipes({ detail });
-    }
-  }, []);
-
-  // console.log(detailRecipes);
-
-  useEffect(() => {
-    const requestMeals = async () => {
-      const categories = await mealsCategories();
-      const nationalities = await mealsNationalities();
-      const ingredients = await mealsIngredients();
-
-      if (ingredients) {
-        setDataMeals({ categories, nationalities, ingredients });
-      }
-    };
-    // console.log(dataMeals);
-    requestMeals();
-  }, []);
-
-  // console.log(dataMeals);
+  const values = useMemo(() => ({}), []);
 
   return (
-    <ContextData.Provider
-      value={ { dataMeals, detailRecipes, fetchRecipeDetails } }
-    >
+    <ContextData.Provider value={ values }>
       { children }
     </ContextData.Provider>
   );
 }
+
+export const useData = () => useContext(ContextData);
 
 ProviderData.propTypes = { children: PropTypes.node }.isRequired;
 

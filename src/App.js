@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import ProviderData from './Contexts/ProviderData';
+import ProviderFilter from './Contexts/ProviderFilter';
+
 import Login from './Pages/Login';
 import Meals from './Pages/Meals';
 import Drinks from './Pages/Drinks';
@@ -12,9 +14,9 @@ import RecipeDetails from './Components/RecipeDetails';
 
 function App() {
   return (
-    <div className="app">
-      <BrowserRouter>
-        <ProviderData>
+    <BrowserRouter>
+      <ProviderData>
+        <ProviderFilter>
           <Switch>
             <Route exact path="/" component={ Login } />
             <Route exact path="/meals" component={ Meals } />
@@ -25,9 +27,9 @@ function App() {
             <Route exact path="/done-recipes" component={ Done } />
             <Route exact path="/favorite-recipes" component={ Favorites } />
           </Switch>
-        </ProviderData>
-      </BrowserRouter>
-    </div>
+        </ProviderFilter>
+      </ProviderData>
+    </BrowserRouter>
   );
 }
 
