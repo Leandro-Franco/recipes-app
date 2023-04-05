@@ -1,11 +1,20 @@
 import PropTypes from 'prop-types';
 import './recipes.css';
 import { useFilter } from '../Contexts/ProviderFilter';
+import { getByCategory } from '../Services/ApiRequest';
 
 function Recipes({ path, recipes, categories }) {
   const { categoryFilter, setCategoryFilter } = useFilter();
 
-  console.log(categories);
+  const handleCategory = async (category) => {
+    const eleven = 11;
+    const url = path === 'Meal'
+      ? `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`
+      : `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`;
+
+    const filterRes = await getByCategory(url, path);
+    setCategoryFilter(filterRes.filter((_, idx) => idx <= eleven));
+  };
 
   return (
     <>
@@ -16,17 +25,22 @@ function Recipes({ path, recipes, categories }) {
             key={ category.strCategory }
             data-testid={ `${category.strCategory}-category-filter` }
             className="category-btn"
-            onClick={ () => {
-              setCategoryFilter({
-                ...categoryFilter, [`${path}Filter`]: category.strCategory });
-            } }
+            onClick={ () => handleCategory(category.strCategory) }
           >
             {category.strCategory}
           </button>
         )) }
+        <button
+          type="button"
+          data-testid="All-category-filter"
+          className="category-btn-all"
+          onClick={ () => setCategoryFilter(recipes) }
+        >
+          All
+        </button>
       </section>
       <section className="recipes-grid">
-        { recipes?.map((recipe, idx) => (
+        { categoryFilter?.map((recipe, idx) => (
           <article
             key={ recipe[`id${path}`] }
             data-testid={ `${idx}-recipe-card` }

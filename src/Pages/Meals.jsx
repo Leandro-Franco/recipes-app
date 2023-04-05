@@ -3,10 +3,12 @@ import Footer from '../Components/Footer';
 import Header from '../Components/Header';
 import Recipes from '../Components/Recipes';
 import { getMealsCategories, getMealsRecipes } from '../Services/ApiRequest';
+import { useFilter } from '../Contexts/ProviderFilter';
 
 function Meals() {
   const [mealsRecipes, setMealsRecipes] = useState([]);
   const [mealsCategories, setMealsCategories] = useState([]);
+  const { setCategoryFilter } = useFilter();
 
   useEffect(() => {
     const requestMeals = async () => {
@@ -16,6 +18,7 @@ function Meals() {
       const categoriesRes = await getMealsCategories();
       setMealsRecipes(recipesRes.filter((_, idx) => idx <= eleven));
       setMealsCategories(categoriesRes.filter((_, idx) => idx <= four));
+      setCategoryFilter(recipesRes.filter((_, idx) => idx <= eleven));
     };
     requestMeals();
   }, []);

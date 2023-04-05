@@ -4,10 +4,7 @@ import { } from '../Services/ApiRequest';
 import ContextFilter from './ContextData';
 
 function ProviderFilter({ children }) {
-  const [categoryFilter, setCategoryFilter] = useState({
-    MealCategory: '',
-    DrinkCategory: '',
-  });
+  const [categoryFilter, setCategoryFilter] = useState([]);
 
   useEffect(() => {
 
@@ -16,7 +13,7 @@ function ProviderFilter({ children }) {
   const values = useMemo(() => ({
     categoryFilter,
     setCategoryFilter,
-  }), [categoryFilter]);
+  }), [categoryFilter, setCategoryFilter]);
 
   return (
     <ContextFilter.Provider value={ values }>
