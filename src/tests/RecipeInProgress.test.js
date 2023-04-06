@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route } from 'react-router-dom';
 import RecipeInProgress from '../Pages/RecipeInProgress';
 
-describe.only('RecipeInProgress component', () => {
+describe('RecipeInProgress component', () => {
   it('deve renderizar corretamente na tela', () => {
     const mockedRecipeInProgress = {
       meal: {

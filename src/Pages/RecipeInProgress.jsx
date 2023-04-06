@@ -1,120 +1,88 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { useParams, useHistory } from 'react-router-dom';
+import { getRecipeById, getIngredientAndMeasureList } from '../Services/ApiRequest';
 import useRecipeInProgress from '../hooks/useRecipeInProgress';
 import ShareButton from '../Components/ShareButton';
 import FavoriteButton from '../Components/FavoriteButton';
-import IngredientList from '../Components/IngredientList';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
-import { fetchIngredients } from '../Services/ApiRequest';
 
 function RecipeInProgress() {
-  const { id, type } = useParams();
-  const [recipeInProgress, setRecipeInProgress] = useRecipeInProgress(type, id);
-  const history = useHistory();
+  const type = 'meals';
+  const [recipe, setRecipe] = useState({});
   const [ingredients, setIngredients] = useState([]);
+  const [instructions, setInstructions] = useState('');
+  const [recipeInProgress, setRecipeInProgress] = useRecipeInProgress(type);
+  const { id } = useParams();
+  const history = useHistory();
 
   useEffect(() => {
-    const fetchIngredientsData = async () => {
-      const fetchedIngredients = await fetchIngredients(type === 'meal' ? 's' : '', id);
-      setIngredients(fetchedIngredients);
-    };
-    fetchIngredientsData();
+    async function fetchRecipe() {
+      const fetchedRecipe = await getRecipeById(type, id);
+      setRecipe(fetchedRecipe);
+      setIngredients(getIngredientAndMeasureList(fetchedRecipe));
+      setInstructions(fetchedRecipe.strInstructions);
+    }
+
+    fetchRecipe();
   }, [id, type]);
 
-  if (!recipeInProgress[type] || !recipeInProgress[type][id]) {
-    const maxIgredients = 20;
-    setRecipeInProgress({
-      ...recipeInProgress,
-      [type]: {
-        ...recipeInProgress[type],
-        [id]: Array(maxIgredients).fill(null),
-      },
-    });
-  }
-
-  const handleIngredientCheck = (index) => {
-    const updatedRecipeInProgress = {
-      ...recipeInProgress,
-      [type]: {
-        ...recipeInProgress[type],
-        [id]: [
-          ...recipeInProgress[type][id].slice(0, index),
-          !recipeInProgress[type][id][index],
-          ...recipeInProgress[type][id].slice(index + 1),
-        ],
-      },
-    };
-    setRecipeInProgress(updatedRecipeInProgress);
-  };
-
-  const handleFinishRecipe = () => {
-    const updatedRecipeInProgress = {
-      ...recipeInProgress,
-      [type]: {
-        ...recipeInProgress[type],
-        [id]: [],
-      },
-    };
-    setRecipeInProgress(updatedRecipeInProgress);
+  function handleFinishRecipe() {
+    const inProgressRecipes = recipeInProgress;
+    delete inProgressRecipes[type][id];
+    setRecipeInProgress(inProgressRecipes);
     history.push('/done-recipes');
-  };
-
-  const {
-    strMealThumb,
-    strDrinkThumb,
-    strMeal,
-    strDrink,
-    strCategory,
-    strAlcoholic,
-    strInstructions,
-    measures,
-  } = recipeInProgress;
-
-  function formatCategoryAndAlcoholicInfo(category, isAlcoholic) {
-    if (category && isAlcoholic) {
-      return `${category} - Alcoholic`;
-    } if (category) {
-      return category;
-    } if (isAlcoholic) {
-      return 'Alcoholic';
-    }
-    return '';
   }
 
   return (
-    <>
-      <Header title={ type === 'meal' ? strMeal : strDrink } />
-      <div>
-        <img
-          src={ type === 'meal' ? strMealThumb : strDrinkThumb }
-          alt={ type === 'meal' ? strMeal : strDrink }
-          data-testid="recipe-photo"
-        />
-        <h1 data-testid="recipe-title">{type === 'meal' ? strMeal : strDrink}</h1>
-        <div data-testid="recipe-category">
-          {formatCategoryAndAlcoholicInfo(strCategory, strAlcoholic)}
+    <main>
+      <Header title="Recipes in Progress" />
+      <img
+        src={ recipe.strMealThumb || recipe.strDrinkThumb }
+        alt={ recipe.strMeal || recipe.strDrink }
+        data-testid="recipe-photo"
+      />
+      <section className="recipe-details">
+        <div className="recipe-header">
+          <h1 data-testid="recipe-title">{ recipe.strMeal || recipe.strDrink }</h1>
+          <div className="recipe-header-buttons">
+            <ShareButton data-testid="share-btn" />
+            <FavoriteButton recipe={ recipe } type={ type } data-testid="favorite-btn" />
+          </div>
         </div>
-        <ShareButton type={ type } id={ id } testId="share-btn" />
-        <FavoriteButton type={ type } id={ id } testId="favorite-btn" />
-        <IngredientList
-          ingredients={ ingredients }
-          measures={ measures }
-          checkedIngredients={ recipeInProgress[type]?.[id] ?? [] }
-          onIngredientCheck={ handleIngredientCheck }
-        />
-        <p data-testid="instructions">{strInstructions}</p>
-        <button
-          type="button"
-          onClick={ handleFinishRecipe }
-          data-testid="finish-recipe-btn"
-        >
-          Finalizar Receita
-        </button>
-      </div>
+        <h3 data-testid="recipe-category">{ recipe.strCategory }</h3>
+        <section className="ingredients-list">
+          <h2>Ingredients</h2>
+          <ul>
+            { ingredients.map((ingredient, index) => (
+              <li key={ index }>
+                <span data-testid={ `${index}-ingredient-name-and-measure` }>
+                  { ingredient }
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+        <section className="instructions">
+          <h2>Instructions</h2>
+          <p data-testid="instructions">{ instructions }</p>
+        </section>
+      </section>
+      <button
+        type="button"
+        data-testid="finish-recipe-btn"
+        onClick={ handleFinishRecipe }
+      >
+        Finish Recipe
+      </button>
       <Footer />
-    </>
+    </main>
   );
 }
+
+RecipeInProgress.propTypes = {
+  type: PropTypes.string.isRequired,
+};
 
 export default RecipeInProgress;

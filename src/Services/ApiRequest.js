@@ -79,22 +79,29 @@ export const searchMealId = async (id) => {
   return data;
 };
 
-export const fetchIngredients = async (id, type) => {
-  const apiUrl = type === 'meal'
+export const getRecipeById = async (type, id) => {
+  const endpoint = type === 'meals'
     ? `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
     : `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
 
-  const response = await fetch(apiUrl);
-  const data = await response.json();
+  try {
+    const response = await fetch(endpoint);
+    const data = await response.json();
+    return data[type][0];
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
 
+export const getIngredientAndMeasureList = (recipe) => {
   const ingredients = [];
   const measures = [];
+  const maxNum = 20;
 
-  // Obtém os ingredientes e medidas do objeto retornado pela API
-  const maxIngredients = 20;
-  for (let i = 1; i <= maxIngredients; i += 1) {
-    const ingredient = data[type === 'meal' ? 'meals' : 'drinks'][0][`strIngredient${i}`];
-    const measure = data[type === 'meal' ? 'meals' : 'drinks'][0][`strMeasure${i}`];
+  for (let i = 1; i <= maxNum; i += 1) {
+    const ingredient = recipe[`strIngredient${i}`];
+    const measure = recipe[`strMeasure${i}`];
 
     if (ingredient && measure) {
       ingredients.push(ingredient);
@@ -102,5 +109,15 @@ export const fetchIngredients = async (id, type) => {
     }
   }
 
-  return { ingredients, measures };
+  return ingredients.map((ingredient, index) => `${ingredient} - ${measures[index]}`);
+};
+
+export const fetchIngredients = async (type) => {
+  try {
+    const response = await fetch(`https://www.themealdb.com/api/json/v1/1/list.php?${type}=list`);
+    const data = await response.json();
+    return data[type].map((ingredient) => ingredient.strIngredient);
+  } catch (error) {
+    console.log(error);
+  }
 };
