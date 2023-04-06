@@ -38,8 +38,8 @@ function RecipeInProgress() {
 
   return (
     <main>
+      <Header title="Recipes in Progress" />
       <section>
-        <Header title="Recipes in Progress" />
         <img
           src={ recipe.strMealThumb || recipe.strDrinkThumb }
           alt={ recipe.strMeal || recipe.strDrink }
