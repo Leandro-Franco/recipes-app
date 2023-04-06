@@ -26,6 +26,7 @@ function Drinks() {
   return (
     <>
       <Header title="Drinks" />
+
       <Recipes
         path="Drink"
         recipes={ drinksRecipes }
