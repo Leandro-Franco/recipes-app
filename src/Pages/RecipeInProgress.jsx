@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, useLocation } from 'react-router-dom';
 import { getRecipeById, getIngredientAndMeasureList } from '../Services/ApiRequest';
 import useRecipeInProgress from '../hooks/useRecipeInProgress';
 import ShareButton from '../Components/ShareButton';
@@ -9,7 +8,9 @@ import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import './recipeinprogress.css';
 
-function RecipeInProgress({ type }) {
+function RecipeInProgress() {
+  const { pathname } = useLocation();
+  const type = pathname.includes('drinks') ? 'drinks' : 'meals';
   const [recipe, setRecipe] = useState({});
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState('');
@@ -81,9 +82,5 @@ function RecipeInProgress({ type }) {
     </main>
   );
 }
-
-RecipeInProgress.propTypes = {
-  type: PropTypes.string.isRequired,
-};
 
 export default RecipeInProgress;
