@@ -38,45 +38,46 @@ function RecipeInProgress() {
 
   return (
     <main>
-      <div className="recipe-header-buttons">
-        <Header title={ type === 'meals' ? recipe.strMeal : recipe.strDrink } />
-      </div>
-      <img
-        src={ recipe.strMealThumb || recipe.strDrinkThumb }
-        alt={ recipe.strMeal || recipe.strDrink }
-        data-testid="recipe-photo"
-        className="recipe-photo"
-      />
-      <section className="recipe-details">
-        <div className="recipe-header-buttons">
-          <ShareButton data-testid="share-btn" />
-          <FavoriteButton recipe={ recipe } type={ type } data-testid="favorite-btn" />
-        </div>
-        <h3 data-testid="recipe-category">{ recipe.strCategory }</h3>
-        <section className="ingredients-list">
-          <h2>Ingredients</h2>
-          <ul>
-            { ingredients.map((ingredient, index) => (
-              <li key={ index }>
-                <span data-testid={ `${index}-ingredient-name-and-measure` }>
-                  { ingredient }
-                </span>
-              </li>
-            ))}
-          </ul>
+      <section>
+        <Header title="Recipes in Progress" />
+        <img
+          src={ recipe.strMealThumb || recipe.strDrinkThumb }
+          alt={ recipe.strMeal || recipe.strDrink }
+          data-testid="recipe-photo"
+          className="recipe-photo"
+        />
+        <section className="recipe-details">
+          <div className="recipe-header">
+            <h1 data-testid="recipe-title">{ recipe.strMeal || recipe.strDrink }</h1>
+          </div>
+          <h3 data-testid="recipe-category">{ recipe.strCategory }</h3>
+          <section className="ingredients-list">
+            <h2>Ingredients</h2>
+            <ul>
+              { ingredients.map((ingredient, index) => (
+                <li key={ index }>
+                  <span data-testid={ `${index}-ingredient-name-and-measure` }>
+                    { ingredient }
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+          <section className="instructions">
+            <h2>Instructions</h2>
+            <p data-testid="instructions">{ instructions }</p>
+          </section>
         </section>
-        <section className="instructions">
-          <h2>Instructions</h2>
-          <p data-testid="instructions">{ instructions }</p>
-        </section>
+        <ShareButton data-testid="share-btn" />
+        <FavoriteButton recipe={ recipe } type={ type } data-testid="favorite-btn" />
+        <button
+          type="button"
+          data-testid="finish-recipe-btn"
+          onClick={ handleFinishRecipe }
+        >
+          Finish Recipe
+        </button>
       </section>
-      <button
-        type="button"
-        data-testid="finish-recipe-btn"
-        onClick={ handleFinishRecipe }
-      >
-        Finish Recipe
-      </button>
       <Footer />
     </main>
   );
