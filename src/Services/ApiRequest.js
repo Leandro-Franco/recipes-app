@@ -118,3 +118,36 @@ export const getById = async (url, type) => {
 
   return type === 'Meal' ? data.meals[0] : data.drinks[0];
 };
+
+export const getRecipeById = async (type, id) => {
+  const endpoint = type === 'meals'
+    ? `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
+    : `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
+
+  try {
+    const response = await fetch(endpoint);
+    const data = await response.json();
+    return data[type][0];
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const getIngredientAndMeasureList = (recipe) => {
+  const ingredients = [];
+  const measures = [];
+  const maxNum = 20;
+
+  for (let i = 1; i <= maxNum; i += 1) {
+    const ingredient = recipe[`strIngredient${i}`];
+    const measure = recipe[`strMeasure${i}`];
+
+    if (ingredient && measure) {
+      ingredients.push(ingredient);
+      measures.push(measure);
+    }
+  }
+
+  return ingredients.map((ingredient, index) => `${ingredient} - ${measures[index]}`);
+};
