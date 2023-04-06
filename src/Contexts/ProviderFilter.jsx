@@ -1,7 +1,8 @@
-import { useState, useContext, useMemo, useEffect } from 'react';
+import { useState, useContext, useMemo, useEffect, createContext } from 'react';
 import PropTypes from 'prop-types';
 import { getById } from '../Services/ApiRequest';
-import ContextFilter from './ContextData';
+
+export const ContextFilter = createContext();
 
 function ProviderFilter({ children }) {
   const [categoryFilter, setCategoryFilter] = useState([]);
