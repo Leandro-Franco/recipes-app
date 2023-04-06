@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useCallback, useMemo, createContext } from 'react';
-import PropTypes from 'prop-types';
 import { searchDrinkId, searchMealId, fetchIngredients } from '../Services/ApiRequest';
 import RecipeInProgress from '../Pages/RecipeInProgress';
 
 export const RecipeContext = createContext();
 
-function RecipeContextProvider({ type }) {
+function RecipeContextProvider() {
   const [dataMeals, setDataMeals] = useState({
     categories: null,
     ingredients: null,
@@ -23,7 +22,7 @@ function RecipeContextProvider({ type }) {
     if (detail) {
       setDetailRecipes({ detail });
     }
-  }, [type]);
+  }, []);
 
   useEffect(() => {
     const requestMeals = async () => {
@@ -45,13 +44,9 @@ function RecipeContextProvider({ type }) {
 
   return (
     <RecipeContext.Provider value={ values }>
-      <RecipeInProgress type={ type } />
+      <RecipeInProgress />
     </RecipeContext.Provider>
   );
 }
-
-RecipeContextProvider.propTypes = {
-  type: PropTypes.string.isRequired,
-};
 
 export default RecipeContextProvider;
