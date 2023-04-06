@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { useParams, useHistory } from 'react-router-dom';
 import { getRecipeById, getIngredientAndMeasureList } from '../Services/ApiRequest';
 import useRecipeInProgress from '../hooks/useRecipeInProgress';
@@ -7,6 +7,7 @@ import ShareButton from '../Components/ShareButton';
 import FavoriteButton from '../Components/FavoriteButton';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
+import './recipeinprogress.css';
 
 function RecipeInProgress() {
   const type = 'meals';
@@ -42,6 +43,7 @@ function RecipeInProgress() {
         src={ recipe.strMealThumb || recipe.strDrinkThumb }
         alt={ recipe.strMeal || recipe.strDrink }
         data-testid="recipe-photo"
+        className="recipe-photo"
       />
       <section className="recipe-details">
         <div className="recipe-header">
@@ -81,8 +83,8 @@ function RecipeInProgress() {
   );
 }
 
-RecipeInProgress.propTypes = {
-  type: PropTypes.string.isRequired,
-};
+// RecipeInProgress.propTypes = {
+//   type: PropTypes.string.isRequired,
+// };
 
 export default RecipeInProgress;

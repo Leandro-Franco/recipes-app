@@ -13,16 +13,17 @@ function RecipeContextProvider({ type }) {
 
   const [detailRecipes, setDetailRecipes] = useState({ detail: null });
 
-  const fetchRecipeDetails = useCallback(async (recipeId, recipeType) => {
+  const fetchRecipeDetails = useCallback(async (recipeId) => {
     const id = recipeId;
-    const types = recipeType;
-    const results = types === 'drinks' ? await searchDrinkId(id) : await searchMealId(id);
+    const meals = await searchMealId(id);
+    const drinks = await searchDrinkId(id);
+    const results = type === 'drinks' ? drinks : meals;
     const detail = results.drinks ? results.drinks[0] : results.meals[0];
 
     if (detail) {
       setDetailRecipes({ detail });
     }
-  }, []);
+  }, [type]);
 
   useEffect(() => {
     const requestMeals = async () => {
