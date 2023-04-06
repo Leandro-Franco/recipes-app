@@ -4,8 +4,6 @@ import { getRecipeById, getIngredientAndMeasureList } from '../Services/ApiReque
 import useRecipeInProgress from '../hooks/useRecipeInProgress';
 import ShareButton from '../Components/ShareButton';
 import FavoriteButton from '../Components/FavoriteButton';
-import Header from '../Components/Header';
-import Footer from '../Components/Footer';
 import './recipeinprogress.css';
 
 function RecipeInProgress() {
@@ -38,7 +36,6 @@ function RecipeInProgress() {
 
   return (
     <main>
-      <Header title="Recipes in Progress" />
       <section>
         <img
           src={ recipe.strMealThumb || recipe.strDrinkThumb }
@@ -49,6 +46,8 @@ function RecipeInProgress() {
         <section className="recipe-details">
           <div className="recipe-header">
             <h1 data-testid="recipe-title">{ recipe.strMeal || recipe.strDrink }</h1>
+            <ShareButton data-testid="share-btn" />
+            <FavoriteButton recipe={ recipe } type={ type } data-testid="favorite-btn" />
           </div>
           <h3 data-testid="recipe-category">{ recipe.strCategory }</h3>
           <section className="ingredients-list">
@@ -68,8 +67,6 @@ function RecipeInProgress() {
             <p data-testid="instructions">{ instructions }</p>
           </section>
         </section>
-        <ShareButton data-testid="share-btn" />
-        <FavoriteButton recipe={ recipe } type={ type } data-testid="favorite-btn" />
         <button
           type="button"
           data-testid="finish-recipe-btn"
@@ -78,7 +75,6 @@ function RecipeInProgress() {
           Finish Recipe
         </button>
       </section>
-      <Footer />
     </main>
   );
 }

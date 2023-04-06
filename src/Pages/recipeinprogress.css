@@ -1,9 +1,10 @@
 main {
-  max-height: calc(100% - 80px);
+  height: 75vh;
+  margin: 1rem;
   overflow-y: auto;
 }
 
 .recipe-photo {
   height: auto;
-  max-width: 250px;
+  max-width: 100%;
 }

@@ -1,15 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo, createContext } from 'react';
-import { searchDrinkId, searchMealId, fetchIngredients } from '../Services/ApiRequest';
+import React, { useState, useCallback, useMemo, createContext } from 'react';
+import { searchDrinkId, searchMealId } from '../Services/ApiRequest';
 import RecipeInProgress from '../Pages/RecipeInProgress';
 
 export const RecipeContext = createContext();
 
 function RecipeContextProvider() {
-  const [dataMeals, setDataMeals] = useState({
-    categories: null,
-    ingredients: null,
-  });
-
   const [detailRecipes, setDetailRecipes] = useState({ detail: null });
 
   const fetchRecipeDetails = useCallback(async (recipeId) => {
@@ -24,20 +19,7 @@ function RecipeContextProvider() {
     }
   }, []);
 
-  useEffect(() => {
-    const requestMeals = async () => {
-      const ingredients = await fetchIngredients('list');
-      const categories = await fetchIngredients('category');
-
-      if (ingredients) {
-        setDataMeals({ categories, ingredients });
-      }
-    };
-    requestMeals();
-  }, []);
-
-  const values = useMemo(() => ({ dataMeals, detailRecipes, fetchRecipeDetails }), [
-    dataMeals,
+  const values = useMemo(() => ({ detailRecipes, fetchRecipeDetails }), [
     detailRecipes,
     fetchRecipeDetails,
   ]);
