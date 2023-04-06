@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './App.css';
 import * as serviceWorker from './serviceWorker';
-import { Provider } from './Contexts/ProviderData';
+
 import App from './App';
+import { Provider } from './Contexts/ProviderData';
 
 ReactDOM
   .createRoot(document.getElementById('root'))

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import context from '../Contexts/ProviderData';
 import { searchDrinkFirtsLetter,
@@ -22,26 +22,16 @@ function SearchBar() {
   const history = useHistory();
   const page = (history.location.pathname);
 
-  const redirector = async () => {
-    if (await resultsOfSearch.length === 1) {
-      history.push(page === '/meals'
-        ? `/meals/${resultsOfSearch[0].idMeal}`
-        : `/drinks/${resultsOfSearch[0].idDrink}`);
-    }
-    const maxSize = 12;
-    setCategoryFilter(resultsOfSearch.slice(0, maxSize));
-  };
-
   const handleSubmit = async (event, option, text, local) => {
     event.preventDefault();
     if (local === '/drinks') {
       switch (option) {
       case 'ingredient':
-        return (setResultsOfSearch(await searchDrinkIngredient(text)), redirector());
+        return (setResultsOfSearch(await searchDrinkIngredient(text)), alert);
       case 'name':
-        return (setResultsOfSearch(await searchDrinkName(text)), redirector());
+        return (setResultsOfSearch(await searchDrinkName(text)), alert);
       case 'firstLetter':
-        return (setResultsOfSearch(await searchDrinkFirtsLetter(text)), redirector());
+        return (setResultsOfSearch(await searchDrinkFirtsLetter(text)), alert);
       default:
         return console.log('default');
       }
@@ -49,16 +39,38 @@ function SearchBar() {
     if (local === '/meals') {
       switch (option) {
       case 'ingredient':
-        return (setResultsOfSearch(await searchMealsIngredients(text)), redirector());
+        return (setResultsOfSearch(await searchMealsIngredients(text)), alert);
       case 'name':
-        return (setResultsOfSearch(await searchMealsName(text)), redirector());
+        return (setResultsOfSearch(await searchMealsName(text)), alert);
       case 'firstLetter':
-        return (setResultsOfSearch(await searchMealsFirtsLetter(text)), redirector());
+        return (setResultsOfSearch(await searchMealsFirtsLetter(text)), alert);
       default:
         return console.log('default');
       }
     }
   };
+
+  useEffect(() => {
+    const maxSize = 12;
+    if (resultsOfSearch && resultsOfSearch.length > 1) {
+      setCategoryFilter(resultsOfSearch.slice(0, maxSize));
+    }
+    const redirector = async () => {
+      if (resultsOfSearch && resultsOfSearch.length === 1) {
+        history.push(page === '/meals'
+          ? `/meals/${resultsOfSearch[0].idMeal}`
+          : `/drinks/${resultsOfSearch[0].idDrink}`);
+        setResultsOfSearch([]);
+      }
+    };
+    redirector();
+  }, [
+    resultsOfSearch,
+    setCategoryFilter,
+    history,
+    page,
+    setResultsOfSearch,
+  ]);
 
   return (
     <form>

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Footer from '../Components/Footer';
 import Header from '../Components/Header';
-import { Results } from '../Components/Results';
 import Recipes from '../Components/Recipes';
 import { getMealsCategories, getMealsRecipes } from '../Services/ApiRequest';
 import { useFilter } from '../Contexts/ProviderFilter';

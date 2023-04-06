@@ -17,28 +17,31 @@ export const getMealsNationalities = async () => {
 export const searchMealsIngredients = async (ingredient) => {
   const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`);
   const data = await response.json();
+  if (data.meals === null) {
+    global.alert(warming);
+  }
 
-  if (!data.meals) {
-    return global.alert(warming);
-  } return data.meals;
+  return data.meals;
 };
 
 export const searchMealsName = async (name) => {
   const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`);
   const data = await response.json();
+  if (data.meals === null) {
+    global.alert(warming);
+  }
 
-  if (!data.meals) {
-    return global.alert(warming);
-  } return data.meals;
+  return data.meals;
 };
 
 export const searchDrinkName = async (name) => {
   const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${name}`);
   const data = await response.json();
+  if (data.drinks === null) {
+    global.alert(warming);
+  }
 
-  if (!data.drinks) {
-    return global.alert(warming);
-  } return data.drinks;
+  return data.drinks;
 };
 
 export const searchMealsFirtsLetter = async (letter) => {
@@ -48,6 +51,9 @@ export const searchMealsFirtsLetter = async (letter) => {
   if (letter.length === 1) {
     const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${letter}`);
     const data = await response.json();
+    if (data.meals === null) {
+      global.alert(warming);
+    }
 
     return data.meals;
   } return null;
@@ -60,6 +66,9 @@ export const searchDrinkFirtsLetter = async (letter) => {
   if (letter.length === 1) {
     const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${letter}`);
     const data = await response.json();
+    if (data.drinks === null) {
+      global.alert(warming);
+    }
 
     return data.drinks;
   } return null;
@@ -68,10 +77,11 @@ export const searchDrinkFirtsLetter = async (letter) => {
 export const searchDrinkIngredient = async (ingredient) => {
   const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`);
   const data = await response.json();
+  if (data.drinks === null) {
+    global.alert(warming);
+  }
 
-  if (!data.drinks) {
-    return global.alert(warming);
-  } return data.drinks;
+  return data.drinks;
 };
 
 export const getMealsRecipes = async () => {
