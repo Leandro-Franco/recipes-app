@@ -47,7 +47,6 @@ function RecipeInProgress() {
       />
       <section className="recipe-details">
         <div className="recipe-header">
-          <h1 data-testid="recipe-title">{ recipe.strMeal || recipe.strDrink }</h1>
           <div className="recipe-header-buttons">
             <ShareButton data-testid="share-btn" />
             <FavoriteButton recipe={ recipe } type={ type } data-testid="favorite-btn" />
