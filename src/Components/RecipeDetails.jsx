@@ -33,7 +33,7 @@ function RecipeDetails() {
     if (detailRecipes) {
       const filteredIngredients = Object.values(detailRecipes)
         .slice(firstIngredient, lastIngredient)
-        .filter((empty) => empty.trim() !== '');
+        .filter((empty) => empty);
 
       setIngredients(filteredIngredients);
     }
