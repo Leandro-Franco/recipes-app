@@ -1,21 +1,36 @@
-import React, { useContext, useMemo } from 'react';
+import { useState, createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import ContextData from './ContextData';
 
-function ProviderData({ children }) {
+const context = createContext();
+
+export default context;
+
+export function Provider({ children }) {
   // const [user, setUser] = useState({});
 
-  const values = useMemo(() => ({}), []);
+  const [dataSearch, setDataSearch] = useState({
+    textSearch: '',
+    searchOptions: '',
+  });
+
+  const [resultsOfSearch, setResultsOfSearch] = useState([]);
+
+  const data = useMemo(() => ({
+    dataSearch,
+    resultsOfSearch,
+    setDataSearch,
+    setResultsOfSearch,
+  }), [dataSearch, resultsOfSearch]);
 
   return (
-    <ContextData.Provider value={ values }>
+    <context.Provider
+      value={ data }
+    >
       { children }
-    </ContextData.Provider>
+    </context.Provider>
   );
 }
 
-export const useData = () => useContext(ContextData);
-
-ProviderData.propTypes = { children: PropTypes.node }.isRequired;
-
-export default ProviderData;
+Provider.propTypes = {
+  children: PropTypes.node,
+}.isRequired;
