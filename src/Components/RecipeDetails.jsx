@@ -1,10 +1,43 @@
+import { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { useFilter } from '../Contexts/ProviderFilter';
 import './recipes.css';
 
 function RecipeDetails() {
-  const { detailRecipes } = useFilter();
+  const history = useHistory();
+  const { detailRecipes, setRecipeId } = useFilter();
+  const [ingredients, setIngredients] = useState();
+  const { id } = useParams();
+  const { pathname } = history.location;
 
-  console.log(detailRecipes);
+  useEffect(() => {
+    const defaultLoad = (recipeId, path) => {
+      if (path === '/meals') {
+        setRecipeId({ id: recipeId, type: 'Meal' });
+      } else { setRecipeId({ id: recipeId, type: 'Drink' }); }
+    };
+
+    const paths = ['/meals', '/drinks'];
+    const regex = new RegExp(`(${paths.join('|')})/\\d+$`);
+    const actualPath = pathname.replace(regex, (match, group) => group);
+
+    defaultLoad(id, actualPath);
+  }, []);
+
+  useEffect(() => {
+    const firstIngredient = 9;
+    const lastIngredient = 29;
+
+    console.log(detailRecipes);
+
+    if (detailRecipes) {
+      const filteredIngredients = Object.values(detailRecipes)
+        .slice(firstIngredient, lastIngredient)
+        .filter((empty) => empty.trim() !== '');
+
+      setIngredients(filteredIngredients);
+    }
+  }, [detailRecipes]);
 
   if (!detailRecipes) {
     return <div>Loading...</div>;
@@ -21,27 +54,42 @@ function RecipeDetails() {
   } = detailRecipes;
 
   return (
-    <div>
-      <div>
+    <section className="details">
+      <article className="details-img-bg">
         <img
           src={ strMealThumb || strDrinkThumb }
           alt={ strMeal || strDrink }
           data-testid="recipe-photo"
-          className="detail-img"
+          className="details-img"
         />
-        <h1 data-testid="recipe-title">
-          {strMeal || strDrink}
-        </h1>
-        <p data-testid="recipe-category">
+      </article>
+
+      <header className="details-header">
+        <p data-testid="recipe-category" className="details-category">
           {strCategory}
         </p>
-      </div>
-      <p data-testid="index-ingredient-name-and-measure">
-        Ingredientes
-      </p>
-      <p data-testid="instructions">
-        {strInstructions}
-      </p>
+      </header>
+
+      <h1 className="details-title" data-testid="recipe-title">
+        {strMeal || strDrink}
+      </h1>
+
+      <fieldset>
+        <legend>Ingredients</legend>
+        <ul data-testid="index-ingredient-name-and-measure">
+          { ingredients?.map((ingredient, idx) => (
+            <li key={ idx }>{ ingredient }</li>
+          ))}
+        </ul>
+      </fieldset>
+
+      <fieldset>
+        <legend>Instructions</legend>
+        <p data-testid="instructions">
+          { strInstructions }
+        </p>
+      </fieldset>
+
       <video
         controls
         data-testid="video"
@@ -49,7 +97,7 @@ function RecipeDetails() {
         <source src={ `${strYoutube}` } />
         <track kind="captions" />
       </video>
-    </div>
+    </section>
   );
 }
 

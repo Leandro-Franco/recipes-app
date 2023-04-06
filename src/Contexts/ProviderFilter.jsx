@@ -6,7 +6,7 @@ import ContextFilter from './ContextData';
 function ProviderFilter({ children }) {
   const [categoryFilter, setCategoryFilter] = useState([]);
   const [recipeId, setRecipeId] = useState(null);
-  const [detailRecipes, setDetailRecipes] = useState({ detail: null });
+  const [detailRecipes, setDetailRecipes] = useState(null);
 
   useEffect(() => {
     const fetchRecipeDetails = async () => {
