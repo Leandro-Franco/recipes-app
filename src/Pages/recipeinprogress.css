@@ -1,5 +1,5 @@
 main {
-  max-height: calc(80vh - 80px);
+  max-height: calc(100% - 80px);
   overflow-y: auto;
 }
 

@@ -38,7 +38,7 @@ function RecipeInProgress() {
 
   return (
     <main>
-      <Header title="Recipes in Progress" />
+      <Header title={ type === 'meals' ? recipe.strMeal : recipe.strDrink } />
       <img
         src={ recipe.strMealThumb || recipe.strDrinkThumb }
         alt={ recipe.strMeal || recipe.strDrink }
