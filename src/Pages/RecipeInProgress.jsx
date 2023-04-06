@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { useParams, useHistory } from 'react-router-dom';
 import { getRecipeById, getIngredientAndMeasureList } from '../Services/ApiRequest';
 import useRecipeInProgress from '../hooks/useRecipeInProgress';
@@ -9,8 +9,7 @@ import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import './recipeinprogress.css';
 
-function RecipeInProgress() {
-  const type = 'meals';
+function RecipeInProgress({ type }) {
   const [recipe, setRecipe] = useState({});
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState('');
@@ -83,8 +82,8 @@ function RecipeInProgress() {
   );
 }
 
-// RecipeInProgress.propTypes = {
-//   type: PropTypes.string.isRequired,
-// };
+RecipeInProgress.propTypes = {
+  type: PropTypes.string.isRequired,
+};
 
 export default RecipeInProgress;
