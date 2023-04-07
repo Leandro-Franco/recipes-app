@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useFilter } from '../Contexts/ProviderFilter';
-import './recipes.css';
 import { getDrinksRecipes, getMealsRecipes } from '../Services/ApiRequest';
-import Carousel from './Carousel';
+
+import '../Components/recipes.css';
+import './carousel.css';
 
 function RecipeDetails() {
   const history = useHistory();
@@ -36,7 +37,7 @@ function RecipeDetails() {
     const paths = ['/meals', '/drinks'];
     const regex = new RegExp(`(${paths.join('|')})/\\d+$`);
     const actualPath = pathname.replace(regex, (match, group) => group);
-    setPath(actualPath === '/meals' ? 'Meal' : 'Drink');
+    setPath(actualPath === '/meals' ? 'Drink' : 'Meal');
 
     defaultLoad(id, actualPath);
     fetchRecipes(actualPath);
@@ -116,7 +117,24 @@ function RecipeDetails() {
         <track kind="captions" />
       </video>
 
-      <Carousel recomended={ recomendedRecipes } path={ path } />
+      <div className="carousel-container">
+        { recomendedRecipes.map((recipe, idx) => (
+          <article
+            data-testid={ `${idx}-recommendation-card` }
+            className="carousel-item"
+            key={ idx }
+          >
+            <img
+              alt={ recipe[`str${path}`] }
+              src={ recipe[`str${path}Thumb`] }
+              className="card-img"
+            />
+            <p data-testid={ `${idx}-recommendation-title` }>
+              { recipe[`str${path}`] }
+            </p>
+          </article>
+        )) }
+      </div>
     </section>
   );
 }
