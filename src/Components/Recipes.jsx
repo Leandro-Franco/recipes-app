@@ -57,7 +57,7 @@ function Recipes({ path, recipes, categories }) {
       <section className="recipes-grid">
         { categoryFilter?.map((recipe, idx) => (
           <article
-            key={ recipe[`id${path}`] }
+            key={ idx }
             data-testid={ `${idx}-recipe-card` }
             className="recipes-card"
             aria-hidden="true"
