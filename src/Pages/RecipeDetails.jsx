@@ -135,6 +135,14 @@ function RecipeDetails() {
           </article>
         )) }
       </div>
+
+      <button
+        type="button"
+        data-testid="start-recipe-btn"
+        className="start-recipe-btn"
+      >
+        Start Recipe
+      </button>
     </section>
   );
 }
