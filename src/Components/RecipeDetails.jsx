@@ -7,21 +7,24 @@ import { getDrinksRecipes, getMealsRecipes } from '../Services/ApiRequest';
 function RecipeDetails() {
   const history = useHistory();
   const { detailRecipes, setRecipeId } = useFilter();
-  const [ingredients, setIngredients] = useState();
+  // const [ingredients, setIngredients] = useState();
   const [recomendedRecipes, setRecomendedRecipes] = useState([]);
+  const [path, setPath] = useState('');
   const { id } = useParams();
   const { pathname } = history.location;
 
+  console.log(detailRecipes);
+
   useEffect(() => {
-    const defaultLoad = (recipeId, path) => {
-      if (path === '/meals') {
+    const defaultLoad = (recipeId, actualPath) => {
+      if (actualPath === '/meals') {
         setRecipeId({ id: recipeId, type: 'Meal' });
       } else { setRecipeId({ id: recipeId, type: 'Drink' }); }
     };
 
-    const fetchRecipes = async (path) => {
+    const fetchRecipes = async (actualPath) => {
       const five = 5;
-      if (path === '/meals') {
+      if (actualPath === '/meals') {
         const recipesRes = await getDrinksRecipes();
         setRecomendedRecipes(recipesRes.filter((_, idx) => idx <= five));
       } else {
@@ -33,25 +36,16 @@ function RecipeDetails() {
     const paths = ['/meals', '/drinks'];
     const regex = new RegExp(`(${paths.join('|')})/\\d+$`);
     const actualPath = pathname.replace(regex, (match, group) => group);
+    setPath(actualPath);
 
     defaultLoad(id, actualPath);
     fetchRecipes(actualPath);
   }, []);
 
-  useEffect(() => {
-    const firstIngredient = 9;
-    const lastIngredient = 29;
-
-    if (detailRecipes) {
-      const filteredIngredients = Object.values(detailRecipes)
-        .slice(firstIngredient, lastIngredient)
-        .filter((empty) => empty);
-
-      setIngredients(filteredIngredients);
-    }
-  }, [detailRecipes]);
-
-  console.log(recomendedRecipes);
+  const ingredients = detailRecipes
+    && Object.keys(detailRecipes)
+      .filter((ingredient) => ingredient.includes('strIngredient')
+      && detailRecipes[ingredient]);
 
   if (!detailRecipes) {
     return <div>Loading...</div>;
@@ -63,6 +57,7 @@ function RecipeDetails() {
     strMeal,
     strDrink,
     strCategory,
+    strAlcoholic,
     strInstructions,
     strYoutube,
   } = detailRecipes;
@@ -80,7 +75,9 @@ function RecipeDetails() {
 
       <header className="details-header">
         <p data-testid="recipe-category" className="details-category">
-          {strCategory}
+          { strAlcoholic === 'Alcoholic'
+            ? `${strCategory} - ${strAlcoholic}`
+            : strCategory }
         </p>
       </header>
 
@@ -90,9 +87,16 @@ function RecipeDetails() {
 
       <fieldset>
         <legend>Ingredients</legend>
-        <ul data-testid="index-ingredient-name-and-measure">
+        <ul>
           { ingredients?.map((ingredient, idx) => (
-            <li key={ idx }><p>{ ingredient }</p></li>
+            <li
+              data-testid={ `${idx}-ingredient-name-and-measure` }
+              key={ idx }
+            >
+              { detailRecipes[ingredient] }
+              {' '}
+              { detailRecipes[`strMeasure${idx + 1}`] }
+            </li>
           ))}
         </ul>
       </fieldset>
