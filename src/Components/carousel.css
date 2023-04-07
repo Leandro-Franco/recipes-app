@@ -1,0 +1,21 @@
+.carousel-container {
+  height: 165px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.carousel-wrapper {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 200%;
+}
+
+.carousel-item {
+  margin-right: 20px;
+  width: 50%;
+}
+
+.card-img {
+  width: 155px;
+}

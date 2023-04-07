@@ -1,21 +1,43 @@
-import React, { useContext, useMemo } from 'react';
+import { useState, createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import ContextData from './ContextData';
+import { getRecipeById } from '../Services/ApiRequest';
 
-function ProviderData({ children }) {
-  // const [user, setUser] = useState({});
+const context = createContext();
 
-  const values = useMemo(() => ({}), []);
+export default context;
+
+export function Provider({ children }) {
+  const [dataSearch, setDataSearch] = useState({
+    textSearch: '',
+    searchOptions: '',
+  });
+
+  const [resultsOfSearch, setResultsOfSearch] = useState([]);
+
+  const fetchRecipeDetails = async (recipeId, type) => {
+    const meals = await getRecipeById(recipeId);
+    const drinks = await getRecipeById(recipeId);
+    const results = type === 'drinks' ? drinks : meals;
+    const detail = results.drinks ? results.drinks[0] : results.meals[0];
+
+    return detail;
+  };
+
+  const data = useMemo(() => ({
+    dataSearch,
+    resultsOfSearch,
+    setDataSearch,
+    setResultsOfSearch,
+    fetchRecipeDetails,
+  }), [dataSearch, resultsOfSearch]);
 
   return (
-    <ContextData.Provider value={ values }>
+    <context.Provider value={ data }>
       { children }
-    </ContextData.Provider>
+    </context.Provider>
   );
 }
 
-export const useData = () => useContext(ContextData);
-
-ProviderData.propTypes = { children: PropTypes.node }.isRequired;
-
-export default ProviderData;
+Provider.propTypes = {
+  children: PropTypes.node,
+}.isRequired;

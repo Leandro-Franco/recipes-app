@@ -33,10 +33,10 @@ function Recipes({ path, recipes, categories }) {
   return (
     <>
       <section className="category-filter">
-        { categories?.map((category) => (
+        { categories?.map((category, idx) => (
           <button
             type="button"
-            key={ category.strCategory }
+            key={ idx }
             data-testid={ `${category.strCategory}-category-filter` }
             className="category-btn"
             onClick={ () => categoryVerify(category.strCategory) }
