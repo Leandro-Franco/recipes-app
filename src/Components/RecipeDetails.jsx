@@ -2,42 +2,50 @@ import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useFilter } from '../Contexts/ProviderFilter';
 import './recipes.css';
+import { getDrinksRecipes, getMealsRecipes } from '../Services/ApiRequest';
+import Carousel from './Carousel';
 
 function RecipeDetails() {
   const history = useHistory();
   const { detailRecipes, setRecipeId } = useFilter();
-  const [ingredients, setIngredients] = useState();
+  const [recomendedRecipes, setRecomendedRecipes] = useState([]);
+  const [path, setPath] = useState('');
   const { id } = useParams();
   const { pathname } = history.location;
 
+  console.log(detailRecipes);
+
   useEffect(() => {
-    const defaultLoad = (recipeId, path) => {
-      if (path === '/meals') {
+    const defaultLoad = (recipeId, actualPath) => {
+      if (actualPath === '/meals') {
         setRecipeId({ id: recipeId, type: 'Meal' });
       } else { setRecipeId({ id: recipeId, type: 'Drink' }); }
+    };
+
+    const fetchRecipes = async (actualPath) => {
+      const five = 5;
+      if (actualPath === '/meals') {
+        const recipesRes = await getDrinksRecipes();
+        setRecomendedRecipes(recipesRes.filter((_, idx) => idx <= five));
+      } else {
+        const recipesRes = await getMealsRecipes();
+        setRecomendedRecipes(recipesRes.filter((_, idx) => idx <= five));
+      }
     };
 
     const paths = ['/meals', '/drinks'];
     const regex = new RegExp(`(${paths.join('|')})/\\d+$`);
     const actualPath = pathname.replace(regex, (match, group) => group);
+    setPath(actualPath === '/meals' ? 'Meal' : 'Drink');
 
     defaultLoad(id, actualPath);
+    fetchRecipes(actualPath);
   }, []);
 
-  useEffect(() => {
-    const firstIngredient = 9;
-    const lastIngredient = 29;
-
-    console.log(detailRecipes);
-
-    if (detailRecipes) {
-      const filteredIngredients = Object.values(detailRecipes)
-        .slice(firstIngredient, lastIngredient)
-        .filter((empty) => empty.trim() !== '');
-
-      setIngredients(filteredIngredients);
-    }
-  }, [detailRecipes]);
+  const ingredients = detailRecipes
+    && Object.keys(detailRecipes)
+      .filter((ingredient) => ingredient.includes('strIngredient')
+      && detailRecipes[ingredient]);
 
   if (!detailRecipes) {
     return <div>Loading...</div>;
@@ -49,6 +57,7 @@ function RecipeDetails() {
     strMeal,
     strDrink,
     strCategory,
+    strAlcoholic,
     strInstructions,
     strYoutube,
   } = detailRecipes;
@@ -66,7 +75,9 @@ function RecipeDetails() {
 
       <header className="details-header">
         <p data-testid="recipe-category" className="details-category">
-          {strCategory}
+          { strAlcoholic === 'Alcoholic'
+            ? `${strCategory} - ${strAlcoholic}`
+            : strCategory }
         </p>
       </header>
 
@@ -76,9 +87,16 @@ function RecipeDetails() {
 
       <fieldset>
         <legend>Ingredients</legend>
-        <ul data-testid="index-ingredient-name-and-measure">
+        <ul>
           { ingredients?.map((ingredient, idx) => (
-            <li key={ idx }>{ ingredient }</li>
+            <li
+              data-testid={ `${idx}-ingredient-name-and-measure` }
+              key={ idx }
+            >
+              { detailRecipes[ingredient] }
+              {' '}
+              { detailRecipes[`strMeasure${idx + 1}`] }
+            </li>
           ))}
         </ul>
       </fieldset>
@@ -97,6 +115,8 @@ function RecipeDetails() {
         <source src={ `${strYoutube}` } />
         <track kind="captions" />
       </video>
+
+      <Carousel recomended={ recomendedRecipes } path={ path } />
     </section>
   );
 }
