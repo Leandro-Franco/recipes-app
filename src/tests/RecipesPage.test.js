@@ -1,11 +1,8 @@
-import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import ProviderFilter from '../Contexts/ProviderFilter';
-import Recipes from '../Components/Recipes';
 import fetch from '../../cypress/mocks/fetch';
-import App from '../App';
 import Meals from '../Pages/Meals';
 import Drinks from '../Pages/Drinks';
 
