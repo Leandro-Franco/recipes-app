@@ -3,11 +3,11 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useFilter } from '../Contexts/ProviderFilter';
 import './recipes.css';
 import { getDrinksRecipes, getMealsRecipes } from '../Services/ApiRequest';
+import Carousel from './Carousel';
 
 function RecipeDetails() {
   const history = useHistory();
   const { detailRecipes, setRecipeId } = useFilter();
-  // const [ingredients, setIngredients] = useState();
   const [recomendedRecipes, setRecomendedRecipes] = useState([]);
   const [path, setPath] = useState('');
   const { id } = useParams();
@@ -36,7 +36,7 @@ function RecipeDetails() {
     const paths = ['/meals', '/drinks'];
     const regex = new RegExp(`(${paths.join('|')})/\\d+$`);
     const actualPath = pathname.replace(regex, (match, group) => group);
-    setPath(actualPath);
+    setPath(actualPath === '/meals' ? 'Meal' : 'Drink');
 
     defaultLoad(id, actualPath);
     fetchRecipes(actualPath);
@@ -115,6 +115,8 @@ function RecipeDetails() {
         <source src={ `${strYoutube}` } />
         <track kind="captions" />
       </video>
+
+      <Carousel recomended={ recomendedRecipes } path={ path } />
     </section>
   );
 }
