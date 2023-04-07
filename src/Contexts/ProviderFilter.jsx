@@ -8,7 +8,7 @@ function ProviderFilter({ children }) {
   const [recipeId, setRecipeId] = useState(null);
   const [detailRecipes, setDetailRecipes] = useState({ detail: null });
 
-  console.log(recipeId);
+  // console.log(recipeId);
 
   useEffect(() => {
     const fetchRecipeDetails = async () => {
