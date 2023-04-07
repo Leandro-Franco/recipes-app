@@ -135,6 +135,17 @@ function RecipeDetails() {
           </article>
         )) }
       </div>
+
+      <button
+        type="button"
+        data-testid="start-recipe-btn"
+        className="start-recipe-btn"
+        onClick={ () => history.push(path === 'Drink'
+          ? `/meals/${id}/in-progress`
+          : `/drinks/${id}/in-progress`) }
+      >
+        Start Recipe
+      </button>
     </section>
   );
 }

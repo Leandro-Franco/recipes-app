@@ -124,3 +124,8 @@ fieldset p {
   font-size: 0.9rem;
   line-height: 1.25rem;
 }
+
+.start-recipe-btn {
+  position: fixed;
+  bottom: 0;
+}
