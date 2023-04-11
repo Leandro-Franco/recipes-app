@@ -52,7 +52,8 @@ function RecipeInProgress() {
             </h1>
             <ShareButton
               type={ type }
-              data-testid="share-btn"
+              id={ +id }
+              testeId="share-btn"
             />
             {/* <FavoriteButton
               recipe={ detailRecipes }
