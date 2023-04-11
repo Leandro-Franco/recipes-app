@@ -1,37 +1,47 @@
 import { useState, useEffect } from 'react';
-// import { useParams, useHistory, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Header from '../Components/Header';
 import { LsDone } from '../Services/localStorageFuncs';
 import ShareButton from '../Components/ShareButton';
-// import { useFilter } from '../Contexts/ProviderFilter';
 
 function DoneRecipes() {
+  const [allRecipes, setAllRecipes] = useState();
   const [recipesDone, setDoneRecipes] = useState();
-  // const { pathname } = useLocation();
-  // const { id } = useParams();
-  // const history = useHistory();
-  // const { setRecipeId } = useFilter();
-  // const type = pathname.includes('drinks') ? 'drinks' : 'meals';
 
   useEffect(() => {
-    console.log(true);
     const getRecipe = () => {
       const recipe = LsDone();
       setDoneRecipes(recipe);
+      setAllRecipes(recipe);
     };
-    // setRecipeId(0);
     getRecipe();
   }, []);
-  console.log(recipesDone);
 
   return (
     <>
       <Header title="Done Recipes" />
       <h1>Receitas feitas</h1>
       <section>
-        <button data-testid="filter-by-all-btn">All</button>
-        <button data-testid="filter-by-meal-btn">Meals</button>
-        <button data-testid="filter-by-drink-btn">Drinks</button>
+        <button
+          data-testid="filter-by-all-btn"
+          onClick={ () => setDoneRecipes(allRecipes) }
+        >
+          All
+        </button>
+        <button
+          data-testid="filter-by-meal-btn"
+          onClick={ () => setDoneRecipes(allRecipes
+            .filter((recipe) => recipe.type === 'meal')) }
+        >
+          Meals
+        </button>
+        <button
+          data-testid="filter-by-drink-btn"
+          onClick={ () => setDoneRecipes(allRecipes
+            .filter((recipe) => recipe.type === 'drink')) }
+        >
+          Drinks
+        </button>
       </section>
       <section
         className="recipes-grid"
@@ -41,26 +51,32 @@ function DoneRecipes() {
           <article
             key={ index }
             data-testid={ `${index}-recipe-card` }
-            // className="recipes-card"
+            className="recipes-card"
             aria-hidden="true"
           >
-            <img
-              data-testid={ `${index}-horizontal-image` }
-              alt={ recipe.name }
-              src={ recipe.image }
-              className="card-img"
-            />
+            <Link
+              to={ `/${recipe.type === 'meal'
+                ? 'meals'
+                : 'drinks'}/${recipe.id}` }
+            >
+              <img
+                data-testid={ `${index}-horizontal-image` }
+                alt={ recipe.name }
+                src={ recipe.image }
+                className="card-img"
+              />
+              <h4
+                data-testid={ `${index}-horizontal-name` }
+                className="card-text"
+              >
+                { recipe.name }
+              </h4>
+            </Link>
             <h4
               data-testid={ `${index}-horizontal-top-text` }
               className="card-text"
             >
               {recipe.category}
-            </h4>
-            <h4
-              data-testid={ `${index}-horizontal-name` }
-              className="card-text"
-            >
-              { recipe.name }
             </h4>
             { recipe.nationality && (
               <h4
@@ -97,10 +113,9 @@ function DoneRecipes() {
               ))
               )
             }
-            {/* src/images/shareIcon.svg */}
             <ShareButton
               testeId={ `${index}-horizontal-share-btn` }
-              type={ recipe.type }
+              type={ recipe.type === 'meal' ? 'meals' : 'drinks' }
               id={ recipe.id }
             />
           </article>

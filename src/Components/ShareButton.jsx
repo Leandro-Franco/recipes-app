@@ -22,9 +22,10 @@ function ShareButton({ type, id, testeId }) {
       type="button"
       onClick={ handleClick }
       className="share-and-favorite"
-      data-testid={ testeId }
     >
-      { copied ? 'Link copied!' : <img src={ shareIcon } alt="shareIcon" /> }
+      { copied
+        ? 'Link copied!'
+        : <img data-testid={ testeId } src={ shareIcon } alt="shareIcon" /> }
     </button>
   );
 }
