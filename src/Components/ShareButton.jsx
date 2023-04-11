@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clipboardCopy from 'clipboard-copy';
 import shareIcon from '../images/shareIcon.svg';
-import './recipes.css';
+// import './recipes.css';
 
-function ShareButton({ type, id }) {
+function ShareButton({ type, id, testeId }) {
   const [copied, setCopied] = useState(false);
+  // const { recipeId } = useFilter();
 
   const shareUrl = `http://localhost:3000/${type}/${id}`;
 
@@ -20,8 +21,8 @@ function ShareButton({ type, id }) {
     <button
       type="button"
       onClick={ handleClick }
-      data-testid="share-btn"
       className="share-and-favorite"
+      data-testid={ testeId }
     >
       { copied ? 'Link copied!' : <img src={ shareIcon } alt="shareIcon" /> }
     </button>
@@ -29,8 +30,12 @@ function ShareButton({ type, id }) {
 }
 
 ShareButton.propTypes = {
-  type: PropTypes.string,
-  id: PropTypes.number,
-}.isRequired;
+  id: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
+  testeId: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+};
 
 export default ShareButton;
