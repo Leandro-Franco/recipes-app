@@ -1,10 +1,13 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import ProviderFilter from '../Contexts/ProviderFilter';
 import fetch from '../../cypress/mocks/fetch';
 import Meals from '../Pages/Meals';
 import Drinks from '../Pages/Drinks';
+
+const zeroCard = '0-card-name';
+const allCategory = 'All-category-filter';
 
 describe('Verifica a página de receitas da aplicação', () => {
   beforeEach(() => {
@@ -14,23 +17,27 @@ describe('Verifica a página de receitas da aplicação', () => {
   afterEach(() => jest.clearAllMocks());
 
   it('Verifica se renderiza as categorias e receitas na página Meals', async () => {
-    render(
-      <ProviderFilter>
-        <Meals />
-      </ProviderFilter>,
-    );
+    await act(async () => {
+      render(
+        <ProviderFilter>
+          <Meals />
+        </ProviderFilter>,
+      );
+    });
 
-    const categoryFilter = await screen.getByTestId(/category-filter/i);
+    const categoryFilter = screen.getByTestId(/Beef-category-filter/i);
 
     expect(categoryFilter).toBeVisible();
   }, 2000);
 
   it('Verifica se renderiza os botões de categoria', async () => {
-    render(
-      <ProviderFilter>
-        <Meals />
-      </ProviderFilter>,
-    );
+    await act(async () => {
+      render(
+        <ProviderFilter>
+          <Meals />
+        </ProviderFilter>,
+      );
+    });
     await waitFor(() => {
       const beefButton = screen.getByTestId('Beef-category-filter');
       expect(beefButton).toBeInTheDocument();
@@ -41,12 +48,14 @@ describe('Verifica a página de receitas da aplicação', () => {
   }, 10000);
 
   it('Verifica a renderização das receitas', async () => {
-    render(
-      <ProviderFilter>
-        <Meals />
-      </ProviderFilter>,
-    );
-    const gridRecipe = await screen.getByTestId('recipes-grid');
+    await act(async () => {
+      render(
+        <ProviderFilter>
+          <Meals />
+        </ProviderFilter>,
+      );
+    });
+    const gridRecipe = screen.getByTestId('recipes-grid');
     expect(gridRecipe).toBeInTheDocument();
   }, 2000);
 
@@ -57,12 +66,12 @@ describe('Verifica a página de receitas da aplicação', () => {
       </ProviderFilter>,
     );
     await waitFor(() => {
-      const allButton = screen.getByTestId('All-category-filter');
+      const allButton = screen.getByTestId(allCategory);
       fireEvent.click(allButton);
     }, { timeout: 10000 });
 
     await waitFor(() => {
-      const receita1 = screen.getByTestId('0-card-name');
+      const receita1 = screen.getByTestId(zeroCard);
       expect(receita1).toBeInTheDocument();
     }, { timeout: 10000 });
   }, 20000);
@@ -79,10 +88,10 @@ describe('Verifica a página de receitas da aplicação', () => {
     );
 
     await waitFor(() => {
-      const allButton = screen.getByTestId('All-category-filter');
+      const allButton = screen.getByTestId(allCategory);
       fireEvent.click(allButton);
 
-      const receita1 = screen.getByTestId('0-card-name');
+      const receita1 = screen.getByTestId(zeroCard);
       expect(receita1).toBeInTheDocument();
       fireEvent.click(receita1);
     }, { timeout: 50000 });
@@ -108,25 +117,29 @@ describe('Verifica a página de receitas da aplicação', () => {
   // // DRINKS:
 
   it('Verifica se renderiza as categorias e receitas na página Drinks', async () => {
-    render(
-      <ProviderFilter>
-        <Drinks />
-      </ProviderFilter>,
-    );
+    await act(async () => {
+      render(
+        <ProviderFilter>
+          <Drinks />
+        </ProviderFilter>,
+      );
+    });
 
     await waitFor(() => {
-      const categoryFilter = screen.getByTestId(/category-filter/i);
+      const categoryFilter = screen.getByTestId(/Ordinary Drink-category-filter/i);
 
       expect(categoryFilter).toBeInTheDocument();
     }, { timeout: 10000 });
   }, 20000);
 
   it('Verifica se renderiza os botões da Drinks', async () => {
-    render(
-      <ProviderFilter>
-        <Drinks />
-      </ProviderFilter>,
-    );
+    await act(async () => {
+      render(
+        <ProviderFilter>
+          <Drinks />
+        </ProviderFilter>,
+      );
+    });
     await waitFor(() => {
       const ordinaryBtn = screen.getByTestId(/Ordinary Drink-category-filter/i);
       expect(ordinaryBtn).toBeInTheDocument();
@@ -137,11 +150,13 @@ describe('Verifica a página de receitas da aplicação', () => {
   }, 20000);
 
   it('Verifica a renderização das receitas da Drinks', async () => {
-    render(
-      <ProviderFilter>
-        <Drinks />
-      </ProviderFilter>,
-    );
+    await act(async () => {
+      render(
+        <ProviderFilter>
+          <Drinks />
+        </ProviderFilter>,
+      );
+    });
 
     await waitFor(() => {
       const gridRecipe = screen.getByTestId('recipes-grid');
@@ -161,10 +176,10 @@ describe('Verifica a página de receitas da aplicação', () => {
     );
 
     await waitFor(() => {
-      const allButton = screen.getByTestId('All-category-filter');
+      const allButton = screen.getByTestId(allCategory);
       fireEvent.click(allButton);
 
-      const receita1 = screen.getByTestId('0-card-name');
+      const receita1 = screen.getByTestId(zeroCard);
       expect(receita1).toBeInTheDocument();
       fireEvent.click(receita1);
     }, { timeout: 50000 });
